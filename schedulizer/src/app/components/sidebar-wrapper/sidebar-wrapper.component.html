@@ -1,0 +1,33 @@
+<!-- <div class="">
+  <button mat-raised-button (click)="sidebarOpen = !sidebarOpen">
+    <i class="material-icons">&#xE5D2;</i>
+  </button>
+</div> -->
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened="{{sidebarOpen}}">
+    <div>
+      <button mat-button name="workers" (click)="addObjectToDB()">
+        <i class="material-icons">&#xE8F9;</i>
+        Darbuotojai
+      </button>
+    </div>
+    <hr>
+    <div>
+      <button mat-button name="schedules" (click)="getObjectFromDB()">
+        <i class="material-icons">&#xE8B5;</i>
+        Grafikai
+      </button>
+    </div>
+    <hr>
+    <div>
+      <button mat-button name="calendar">
+        <i class="material-icons">&#xE916;</i>
+        Kalendorius
+      </button>
+    </div>
+    <hr>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-page-content-wrapper></app-page-content-wrapper>
+  </mat-sidenav-content>
+</mat-sidenav-container>

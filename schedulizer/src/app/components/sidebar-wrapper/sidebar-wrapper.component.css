@@ -1,0 +1,17 @@
+.mat-sidenav-container{
+
+}
+
+mat-sidenav, .mat-sidenav-container{
+  height: 96vh;
+  background: white;
+  padding-left: 5px;
+  padding-right: 5px; 
+}
+
+mat-sidenav button{
+  width: 100%;
+  font-weight: 900;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
