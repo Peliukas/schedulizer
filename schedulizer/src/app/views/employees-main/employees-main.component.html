@@ -1,3 +1,56 @@
-<p>
-  employees-main works!
-</p>
+<mat-selection-list *ngIf="bulkActions === true">
+  <mat-list-option *ngFor="let employee of employeeList">{{employee.firstname}} {{employee.lastname}}</mat-list-option>
+</mat-selection-list>
+<div *ngIf="!bulkActions">
+  <mat-expansion-panel *ngFor="let employee of employeeList">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <strong>{{employee.doc.firstname}} {{employee.doc.lastname}}</strong>
+      </mat-panel-title>
+      <mat-panel-description>
+
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="row employee-list-item-content">
+      <div class="employee-list-item-input-field-container col-8 left">
+        <div class="col-12 input-field-wrapper">
+          <label for="employee_id">Employee ID: </label>
+          <mat-form-field>
+            <input matInput disabled id="employee_id" [(ngModel)]="employee.id">
+          </mat-form-field>
+        </div>
+        <div class="col-12 input-field-wrapper">
+          <label for="employee_firstname">Firstname: </label>
+          <mat-form-field>
+            <input matInput id="employee_firstname" [(ngModel)]="employee.doc.firstname">
+          </mat-form-field>
+        </div>
+        <div class="col-12 input-field-wrapper">
+          <label for="employee_lastname">Lastname: </label>
+          <mat-form-field>
+            <input matInput id="employee_lastname" [(ngModel)]="employee.doc.lastname">
+          </mat-form-field>
+        </div>
+        <div class="col-12 input-field-wrapper">
+          <label for="employee_position">Position: </label>
+          <mat-form-field>
+            <input matInput id="employee_position" [(ngModel)]="employee.doc.position_id">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-12">
+        <button mat-raised-button
+                (click)="saveChanges({id: employee.id, firstname: employee.doc.firstname, lastname: employee.doc.lastname, profession_id: employee.doc.profession_id })">
+          <i class="material-icons">&#xE161;</i>
+          Save changes
+        </button>
+        <button (click)="deleteSelectedEmployee(employee.id)" mat-raised-button><i
+          class="material-icons">&#xE92B;</i> Delete employee
+        </button>
+        <button mat-raised-button><i class="material-icons">&#xE8B5;</i>
+          Add schedule
+        </button>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</div>

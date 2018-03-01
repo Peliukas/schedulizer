@@ -1,0 +1,12 @@
+.app-body{
+  position: relative;
+}
+
+.app-body app-sidebar-wrapper, .app-body app-page-content-wrapper{
+  float: left;
+}
+
+
+.content-wrapper-container{
+
+}

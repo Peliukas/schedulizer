@@ -1,0 +1,54 @@
+<mat-selection-list *ngIf="bulkActions === true">
+  <mat-list-option *ngFor="let position of positionList">{{position.doc.job_title}}</mat-list-option>
+</mat-selection-list>
+<div *ngIf="!bulkActions">
+  <mat-expansion-panel *ngFor="let position of positionList">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <strong>{{position.doc.job_title}}</strong>
+      </mat-panel-title>
+      <mat-panel-description>
+
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="col-12 employee-list-item-content">
+      <div class="position-list-item-input-field-container col-6 left">
+        <div class="col-12 input-field-wrapper">
+          <label for="position_id">position ID: </label>
+          <mat-form-field>
+            <input matInput disabled id="position_id" [(ngModel)]="position.id">
+          </mat-form-field>
+        </div>
+        <div class="col-12 input-field-wrapper">
+          <label for="job_title">Job title: </label>
+          <mat-form-field>
+            <input matInput id="job_title" [(ngModel)]="position.job_title">
+          </mat-form-field>
+        </div>
+        <div class="col-12 input-field-wrapper">
+          <label for="description">Description: </label>
+          <mat-form-field>
+            <input matInput id="description" [(ngModel)]="position.description">
+          </mat-form-field>
+        </div>
+        <div class="col-12 input-field-wrapper">
+          <label for="pay">Pay: </label>
+          <mat-form-field>
+            <input matInput id="pay" [(ngModel)]="position.pay">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-12 flex">
+        <button mat-raised-button
+                (click)="saveChanges({id: position.id})">
+          <i class="material-icons">&#xE161;</i>
+          Save changes
+        </button>
+        <button (click)="deleteSelectedPosition(position.id)" mat-raised-button><i
+          class="material-icons">&#xE92B;</i> Delete position
+        </button>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</div>
+

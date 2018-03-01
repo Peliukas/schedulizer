@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { StorageAdapterService } from '../../services/storage-adapter.service';
-import * as PouchDB from 'pouchdb'
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-sidebar-wrapper',
@@ -10,19 +8,13 @@ import * as PouchDB from 'pouchdb'
 export class SidebarWrapperComponent implements OnInit {
 
   sidebarOpen: boolean;
+  @Output() onModelNameSelected: EventEmitter<any> = new EventEmitter();
 
-  constructor(private db: StorageAdapterService) { }
+  constructor() { }
 
   ngOnInit() {
     this.sidebarOpen = true;
   }
 
-  public addObjectToDB(){
-    this.db.addObject();
 
-  }
-
-  public getObjectFromDB(){
-    console.log(this.db.getObject());
-  }
 }

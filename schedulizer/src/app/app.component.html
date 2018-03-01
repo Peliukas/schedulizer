@@ -1,1 +1,9 @@
-<app-sidebar-wrapper></app-sidebar-wrapper>
+<div class="app-body">
+  <app-sidebar-wrapper (onModelNameSelected)="selectModelName($event)"></app-sidebar-wrapper>
+  <div class="content-wrapper-container">
+    <app-page-content-wrapper *ngIf="selectedModelName === 'employee'"
+                              [modelName]="selectedModelName"></app-page-content-wrapper>
+    <app-page-content-wrapper *ngIf="selectedModelName === 'position'"
+                              [modelName]="selectedModelName"></app-page-content-wrapper>
+  </div>
+</div>

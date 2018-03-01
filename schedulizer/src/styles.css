@@ -4,3 +4,25 @@
 app-root{
   height: 100vh;
 }
+
+.flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex{
+  display: flex;
+}
+
+.right{
+  float: right;
+}
+
+.left{
+  float: left;
+}
+
+simple-snack-bar{
+  color: white;
+}

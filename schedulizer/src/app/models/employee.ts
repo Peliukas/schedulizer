@@ -2,87 +2,66 @@ import PouchDB from 'pouchdb';
 
 export class Employee {
 
-  // private _id: any;
-  // private firstname: string;
-  // private lastname: string;
-  // private position_id: any;
-
-  data: {
-    _id: "",
-    firstname: "",
-    lastname: "",
-    position_id: ""
-  };
-
+  data: any;
   db: any;
 
-  constructor(_id: any, firstname: any, lastname: any, position_id: any ) {
-    this.data._id = _id;
-    this.data.firstname = firstname;
-    this.data.lastname = lastname;
-    this.data.position_id = position_id;
-    this.db = new PouchDB('Employees')
+  constructor() {
+    this.data = {
+      _id: "",
+      firstname: "",
+      lastname: "",
+      position_id: ""
+    };
+    this.db = new PouchDB('Employees');
   }
 
-  public setID(id: any) {
-    this.data._id = id;
+  public setValues(data: any){
+    this.data._id = data._id;
+    this.data.firstname = data.firstname;
+    this.data.lastname = data.lastname;
+    this.data.position_id = data.position_id;
+    return true;
   }
 
-  public setFirstName(firstname: any) {
-    this.data.firstname = firstname;
-  }
-
-  public setFLastName(lastname: any) {
-    this.data.lastname = lastname;
-  }
-
-  public setPositionId(position_id: any) {
-    this.data.position_id = position_id;
-  }
-
-  public getID(id: any) {
-    return this.data._id;
-  }
-
-  public getFirstName(firstname: any) {
-    return this.data.firstname;
-  }
-
-  public getFLastName(lastname: any) {
-    return this.data.lastname;
-  }
-
-  public getPositionId(position_id: any) {
-    return this.data.position_id;
-  }
-
-  public getWorkingDays(){
-
-  }
 
   public save(){
-      this.db.put(this.data);
-      return "object saved!";
+    try{
+      this.db.get(this.data._id).then(doc =>{
+        this.data._rev = doc._rev;
+        this.db.put(this.data);
+      }, cause =>{
+        console.log('creating new employee...');
+        this.db.put(this.data);
+      });
+      console.log('employee saved!');
+      return true
+    }catch(e){
+      console.log(e);
+      return false;
+    }
   }
 
   public delete(){
-      this.db.delete(this.data);
-      return "object deleted!";
+    this.db.get(this.data._id).then(doc => {
+      doc._deleted = true;
+      return this.db.put(doc);
+    }, reason =>{
+      return reason;
+    });
   }
 
-  public find(id: any){
+  public async find(id: any){
     this.db.get(id)
-      .subscribe(data => {
-        return data;
+      .then(employee => {
+        this.data = employee;
       });
+    return this.db.get(id);
   }
 
   public findAll(){
-    this.db.allDocs()
-      .subscribe(data => {
-        return data;
-      });
+    return this.db.allDocs(({include_docs: true}));
   }
+
 
 
 }
