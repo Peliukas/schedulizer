@@ -13,6 +13,9 @@
     </mat-expansion-panel-header>
     <div class="col-12 employee-list-item-content">
       <div class="position-list-item-input-field-container col-6 left">
+
+      </div>
+      <div class="col-6">
         <div class="col-12 input-field-wrapper">
           <label for="position_id">position ID: </label>
           <mat-form-field>
@@ -22,19 +25,19 @@
         <div class="col-12 input-field-wrapper">
           <label for="job_title">Job title: </label>
           <mat-form-field>
-            <input matInput id="job_title" [(ngModel)]="position.job_title">
+            <input matInput id="job_title" [(ngModel)]="position.doc.job_title">
           </mat-form-field>
         </div>
         <div class="col-12 input-field-wrapper">
           <label for="description">Description: </label>
           <mat-form-field>
-            <input matInput id="description" [(ngModel)]="position.description">
+            <input matInput id="description" [(ngModel)]="position.doc.description">
           </mat-form-field>
         </div>
         <div class="col-12 input-field-wrapper">
           <label for="pay">Pay: </label>
           <mat-form-field>
-            <input matInput id="pay" [(ngModel)]="position.pay">
+            <input matInput id="pay" [(ngModel)]="position.doc.pay">
           </mat-form-field>
         </div>
       </div>

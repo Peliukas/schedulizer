@@ -7,13 +7,12 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class SidebarWrapperComponent implements OnInit {
 
-  sidebarOpen: boolean;
+
   @Output() onModelNameSelected: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
-    this.sidebarOpen = true;
   }
 
 

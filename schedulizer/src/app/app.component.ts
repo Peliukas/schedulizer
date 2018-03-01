@@ -1,22 +1,18 @@
-import { Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
   selectedModelName: any;
+  sidebarOpen: boolean;
 
   ngOnInit(): void {
-   this.selectedModelName = 'employee';
-  }
-
-
-  public selectModelName(modelName: string){
-
-    this.selectedModelName = modelName;
+    this.sidebarOpen = true;
+    this.selectedModelName = 'employee';
   }
 
 

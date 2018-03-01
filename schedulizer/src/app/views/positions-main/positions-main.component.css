@@ -2,3 +2,7 @@
   display: flex;
   justify-content: space-between;
 }
+
+.position-list-item-content .col-6 p{
+  line-height: 2.2;
+}

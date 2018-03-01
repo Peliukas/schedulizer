@@ -1,9 +1,49 @@
-<div class="app-body">
-  <app-sidebar-wrapper (onModelNameSelected)="selectModelName($event)"></app-sidebar-wrapper>
-  <div class="content-wrapper-container">
-    <app-page-content-wrapper *ngIf="selectedModelName === 'employee'"
-                              [modelName]="selectedModelName"></app-page-content-wrapper>
-    <app-page-content-wrapper *ngIf="selectedModelName === 'position'"
-                              [modelName]="selectedModelName"></app-page-content-wrapper>
-  </div>
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened="{{sidebarOpen}}">
+    <div>
+      <button mat-button name="workers" (click)="selectedModelName = 'employee'" >
+        <i class="material-icons">&#xE853;</i>
+        Employees
+      </button>
+    </div>
+    <div>
+      <button mat-button name="positions"  (click)="selectedModelName = 'position'" >
+        <i class="material-icons">&#xE8F9;</i>
+        Job positions
+      </button>
+    </div>
+    <div>
+      <button mat-button name="schedules" routerLink="schedules">
+        <i class="material-icons">&#xE8B5;</i>
+        Schedules
+      </button>
+    </div>
+    <hr>
+    <div>
+      <button mat-button name="calendar">
+        <i class="material-icons">&#xE916;</i>
+        Calendar
+      </button>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="app-body">
+      <div class="content-wrapper-container">
+        <mat-card>
+          <mat-card-content>
+            <app-page-content-wrapper *ngIf="selectedModelName === 'employee'"
+                                      [modelName]="selectedModelName"></app-page-content-wrapper>
+            <app-page-content-wrapper *ngIf="selectedModelName === 'position'"
+                                      [modelName]="selectedModelName"></app-page-content-wrapper>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<div class="menu-button-wrapper">
+  <button mat-fab (click)="sidebarOpen = !sidebarOpen">
+    <i class="material-icons">&#xE5D2;</i>
+  </button>
 </div>
+

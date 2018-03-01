@@ -45,3 +45,7 @@ mat-panel-description i{
   align-items: center;
 }
 
+.crud-button-wrapper{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

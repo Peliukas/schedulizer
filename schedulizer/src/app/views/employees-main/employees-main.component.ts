@@ -55,7 +55,7 @@ export class EmployeesMainComponent implements OnInit {
   public getPositionList(){
     this.positionRef.findAll()
       .then(data => {
-        this.positionList = data;
+        this.positionList = data.rows;
         console.log(data);
       });
   }

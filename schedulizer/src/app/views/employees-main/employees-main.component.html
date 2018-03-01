@@ -32,15 +32,19 @@
           </mat-form-field>
         </div>
         <div class="col-12 input-field-wrapper">
-          <label for="employee_position">Position: </label>
+          <label>Position: </label>
           <mat-form-field>
-            <input matInput id="employee_position" [(ngModel)]="employee.doc.position_id">
+            <mat-select #positionSelect value="{{employee.doc.position_id}}" (selectionChange)="employee.doc.position_id = $event">
+              <mat-option *ngFor="let position of positionList" [value]="position.id">
+                {{position.id}}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </div>
-      <div class="col-12">
+      <div class="col-12 crud-button-wrapper">
         <button mat-raised-button
-                (click)="saveChanges({id: employee.id, firstname: employee.doc.firstname, lastname: employee.doc.lastname, profession_id: employee.doc.profession_id })">
+                (click)="saveChanges({_id: employee.id, firstname: employee.doc.firstname, lastname: employee.doc.lastname, position_id: positionSelect.selected.value})">
           <i class="material-icons">&#xE161;</i>
           Save changes
         </button>
