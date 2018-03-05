@@ -29,3 +29,8 @@ mat-sidenav button{
 .menu-button-wrapper button i{
   color: white;
 }
+
+
+.current-date-label{
+  margin: 10px;
+}

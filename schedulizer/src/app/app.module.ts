@@ -4,10 +4,11 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatDatepickerModule, MatMenuModule, MatButtonModule, MatCardModule, MatTabsModule,
   MatTableModule, MatPaginatorModule, MatInputModule, MatSnackBarModule, MatSortModule, MatCheckboxModule,
   MatSelectModule, MatFormFieldModule, MatSidenavModule, MatGridListModule, MatListModule, MatExpansionModule,
-  MatTooltipModule, MatSlideToggleModule} from '@angular/material';
+  MatTooltipModule, MatSlideToggleModule, MatStepperModule, MatChipsModule} from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { StorageAdapterService } from './services/storage-adapter.service';
+import { CalendarModule } from 'angular-calendar';
 
 import { SidebarWrapperComponent } from './components/sidebar-wrapper/sidebar-wrapper.component';
 import { PageContentWrapperComponent } from './components/page-content-wrapper/page-content-wrapper.component';
@@ -17,8 +18,9 @@ import { EmployeesMainComponent } from './views/employees-main/employees-main.co
 import { SchedulesMainComponent } from './views/schedules-main/schedules-main.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ConfirmationBoxComponent } from './components/confirmation-box/confirmation-box.component';
-import {PositionsMainComponent} from "./views/positions-main/positions-main.component";
+import { PositionsMainComponent } from "./views/positions-main/positions-main.component";
 import { ModelListViewComponent } from './views/model-list-view/model-list-view.component';
+import { AddBreakComponent } from './components/add-break/add-break.component';
 
 
 const routes: Routes = [
@@ -39,21 +41,23 @@ const routes: Routes = [
     SchedulesMainComponent,
     ConfirmationBoxComponent,
     PositionsMainComponent,
-    ModelListViewComponent
+    ModelListViewComponent,
+    AddBreakComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
+    CalendarModule.forRoot(),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatDatepickerModule, MatMenuModule, MatButtonModule, MatCardModule, MatTabsModule,
+    MatDatepickerModule, MatMenuModule, MatButtonModule, MatCardModule, MatTabsModule,MatStepperModule,
     MatTableModule, MatPaginatorModule, MatInputModule, MatSnackBarModule, MatSortModule, MatCheckboxModule,
     MatSelectModule, MatFormFieldModule, MatSidenavModule, MatGridListModule, MatListModule, MatExpansionModule,
-    MatTooltipModule, MatSlideToggleModule
+    MatTooltipModule, MatSlideToggleModule,MatChipsModule
   ],
   providers: [StorageAdapterService],
-  entryComponents: [CrudWindowComponent, ConfirmationBoxComponent],
+  entryComponents: [CrudWindowComponent, ConfirmationBoxComponent, AddBreakComponent],
   bootstrap: [AppComponent]
 })
 

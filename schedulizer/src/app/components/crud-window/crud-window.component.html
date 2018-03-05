@@ -15,7 +15,10 @@
         <mat-form-field>
           <input matInput type="text" #position_id required placeholder="Position">
         </mat-form-field>
-        <button mat-button class="button-submit" (click)="addObject({_id: employee_id.value, firstname: firstname.value, lastname: lastname.value, position_id: position_id.value})">Submit</button>
+        <mat-form-field>
+          <input matInput type="text" #schedule_id required placeholder="Schedule">
+        </mat-form-field>
+        <button mat-button class="button-submit" (click)="addObject({_id: employee_id.value, firstname: firstname.value, lastname: lastname.value, position_id: position_id.value, schedule_id: schedule_id.value})">Submit</button>
       </div>
     </div>
     <div *ngIf="modelName === 'position'">
@@ -33,6 +36,17 @@
           <input matInput type="text" #pay required placeholder="Per hour">
         </mat-form-field>
         <button mat-button class="button-submit" (click)="addObject({_id: position_id.value, job_title: job_title.value, description: description.value, pay: pay.value})">Submit</button>
+      </div>
+    </div>
+    <div *ngIf="modelName === 'schedule'">
+      <div>
+        <mat-form-field>
+          <input matInput type="text" #schedule_name required value="{{schedule_name.value}}" placeholder="Schedule name">
+        </mat-form-field>
+        <mat-form-field>
+          <textarea matInput type="text" #schedule_description placeholder="Schedule description"></textarea>
+        </mat-form-field>
+        <button mat-button class="button-submit" (click)="addObject({_id: schedule_name.value, schedule_name: schedule_name.value, schedule_description: schedule_description.value, work_days: [], date: ''})">Submit</button>
       </div>
     </div>
   </div>

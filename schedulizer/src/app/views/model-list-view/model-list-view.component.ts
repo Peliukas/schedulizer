@@ -4,6 +4,7 @@ import {Position} from "../../models/position";
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {CrudWindowComponent} from "../../components/crud-window/crud-window.component";
 import {ConfirmationBoxComponent} from "../../components/confirmation-box/confirmation-box.component";
+import {Schedule} from "../../models/schedule";
 
 
 @Component({
@@ -41,6 +42,14 @@ export class ModelListViewComponent implements OnInit {
           .then(data => {
             this.objectList = data.rows;
           });
+        break;
+      case 'schedule':
+        new Schedule().findAll()
+          .then(data => {
+            this.objectList = data.rows;
+          });
+        break;
+      default: console.log("object not found!");
     }
 
   }
@@ -63,7 +72,7 @@ export class ModelListViewComponent implements OnInit {
     });
   }
 
-  public deleteSelectedEmployee(id: any) {
+  public deleteSelectedObject(id: any) {
     let model: any;
     switch (this.modelName) {
       case "employee":
@@ -71,6 +80,9 @@ export class ModelListViewComponent implements OnInit {
         break;
       case "position":
         model = new Position();
+        break;
+      case "schedule":
+        model = new Schedule();
         break;
     }
     model.find(id)
@@ -92,15 +104,6 @@ export class ModelListViewComponent implements OnInit {
             }
           });
       });
-  }
-
-
-  public saveChanges(changes: any) {
-    let employee = new Employee();
-    employee.setValues(changes);
-    employee.save() === true ?
-      this.snackBar.open("Changes saved!", "OK", {duration: 3000}) :
-      this.snackBar.open("Something went wrong", "OK", {duration: 3000});
   }
 
 

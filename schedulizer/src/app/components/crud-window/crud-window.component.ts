@@ -2,6 +2,7 @@ import {Component, Inject, Input, OnInit} from '@angular/core';
 import {Employee} from "../../models/employee";
 import {Position} from "../../models/position";
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {Schedule} from "../../models/schedule";
 
 @Component({
   selector: 'app-crud-window',
@@ -29,6 +30,11 @@ export class CrudWindowComponent implements OnInit {
         position.setValues(data);
         position.save();
         this.dialogRef.close(position);
+      case "schedule":
+        let schedule = new Schedule();
+        schedule.setValues(data);
+        schedule.save();
+        this.dialogRef.close(schedule);
     }
   }
 

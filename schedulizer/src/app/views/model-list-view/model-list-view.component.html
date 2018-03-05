@@ -6,7 +6,7 @@
           <i class="material-icons">&#xE7FE;</i>
           Add new {{modelName}}
         </button>
-        <button mat-raised-button *ngIf="bulkActions === true" (click)="deleteSelectedEmployee()">
+        <button mat-raised-button *ngIf="bulkActions === true" (click)="deleteSelectedObject()">
           <i class="material-icons">&#xE92B;</i>
           Delete selected {{modelName}}s
         </button>
@@ -23,6 +23,9 @@
     </div>
     <div *ngIf="objectList !== '' && !bulkActions && modelName === 'position'">
       <app-positions-main [positionList]="objectList" [bulkActions]="bulkActions"></app-positions-main>
+    </div>
+    <div *ngIf="objectList !== '' && !bulkActions && modelName === 'schedule'">
+      <app-schedules-main [scheduleList]="objectList" [bulkActions]="bulkActions"></app-schedules-main>
     </div>
   </div>
   <div *ngIf="bulkActions">

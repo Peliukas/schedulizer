@@ -1,0 +1,16 @@
+.current-date-label{
+  font-size: large;
+}
+
+.calendar-header{
+  margin: 10px 0 10px 0;
+}
+
+.selected-day-list-wrapper{
+  height: 200px;
+  overflow: auto;
+}
+
+.cal-has-events{
+
+}

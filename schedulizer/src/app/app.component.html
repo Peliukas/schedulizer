@@ -1,5 +1,5 @@
-<mat-sidenav-container>
-  <mat-sidenav mode="side" opened="{{sidebarOpen}}">
+<div class="row">
+  <div class="col-2">
     <div>
       <button mat-button name="workers" (click)="selectedModelName = 'employee'" >
         <i class="material-icons">&#xE853;</i>
@@ -13,7 +13,7 @@
       </button>
     </div>
     <div>
-      <button mat-button name="schedules" routerLink="schedules">
+      <button mat-button name="schedules" (click)="selectedModelName = 'schedule'">
         <i class="material-icons">&#xE8B5;</i>
         Schedules
       </button>
@@ -25,25 +25,16 @@
         Calendar
       </button>
     </div>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <div class="app-body">
-      <div class="content-wrapper-container">
-        <mat-card>
-          <mat-card-content>
-            <app-page-content-wrapper *ngIf="selectedModelName === 'employee'"
-                                      [modelName]="selectedModelName"></app-page-content-wrapper>
-            <app-page-content-wrapper *ngIf="selectedModelName === 'position'"
-                                      [modelName]="selectedModelName"></app-page-content-wrapper>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
-<div class="menu-button-wrapper">
-  <button mat-fab (click)="sidebarOpen = !sidebarOpen">
-    <i class="material-icons">&#xE5D2;</i>
-  </button>
-</div>
+  </div>
 
+  <div class="col-10">
+    <div class="content-wrapper-container">
+          <app-page-content-wrapper *ngIf="selectedModelName === 'employee'"
+                                    [modelName]="selectedModelName"></app-page-content-wrapper>
+          <app-page-content-wrapper *ngIf="selectedModelName === 'position'"
+                                    [modelName]="selectedModelName"></app-page-content-wrapper>
+          <app-page-content-wrapper *ngIf="selectedModelName === 'schedule'"
+                                    [modelName]="selectedModelName"></app-page-content-wrapper>
+    </div>
+  </div>
+</div>
