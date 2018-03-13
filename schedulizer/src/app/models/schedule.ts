@@ -20,7 +20,6 @@ export class Schedule {
     this.data.schedule_name= data.schedule_name;
     this.data.schedule_description = data.schedule_description;
     this.data.work_days = data.work_days;
-    return true;
   }
 
 
@@ -29,17 +28,24 @@ export class Schedule {
       this.db.get(this.data._id).then(doc =>{
         this.data._rev = doc._rev;
         this.db.put(this.data);
+        console.log('schedule saved!');
       }, cause =>{
-        console.log('creating new schedule...');
-        this.db.put(this.data);
+        if(cause.status === 404){
+          console.log('creating new schedule');
+          this.db.put(this.data);
+        }
       });
-      console.log('schedule saved!');
-      return true
+      return true;
     }catch(e){
       console.log(e);
       return false;
     }
   }
+
+  public setWorkDays(workDays: any){
+    this.data.work_days = workDays;
+  }
+
 
   public delete(){
     this.db.get(this.data._id).then(doc => {

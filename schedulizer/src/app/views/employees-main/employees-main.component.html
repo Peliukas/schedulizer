@@ -11,50 +11,6 @@
 
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div class="row employee-list-item-content">
-      <div class="employee-list-item-input-field-container col-8 left">
-        <div class="col-12 input-field-wrapper">
-          <label for="employee_id">Employee ID: </label>
-          <mat-form-field>
-            <input matInput disabled id="employee_id" [(ngModel)]="employee.id">
-          </mat-form-field>
-        </div>
-        <div class="col-12 input-field-wrapper">
-          <label for="employee_firstname">Firstname: </label>
-          <mat-form-field>
-            <input matInput id="employee_firstname" [(ngModel)]="employee.doc.firstname">
-          </mat-form-field>
-        </div>
-        <div class="col-12 input-field-wrapper">
-          <label for="employee_lastname">Lastname: </label>
-          <mat-form-field>
-            <input matInput id="employee_lastname" [(ngModel)]="employee.doc.lastname">
-          </mat-form-field>
-        </div>
-        <div class="col-12 input-field-wrapper">
-          <label>Position: </label>
-          <mat-form-field>
-            <mat-select #positionSelect value="{{employee.doc.position_id}}" (selectionChange)="employee.doc.position_id = $event">
-              <mat-option *ngFor="let position of positionList" [value]="position.id">
-                {{position.id}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="col-12 crud-button-wrapper">
-        <button mat-raised-button
-                (click)="saveChanges({_id: employee.id, firstname: employee.doc.firstname, lastname: employee.doc.lastname, position_id: positionSelect.selected.value})">
-          <i class="material-icons">&#xE161;</i>
-          Save changes
-        </button>
-        <button (click)="deleteSelectedEmployee(employee.id)" mat-raised-button><i
-          class="material-icons">&#xE92B;</i> Delete employee
-        </button>
-        <button mat-raised-button><i class="material-icons">&#xE8B5;</i>
-          Add schedule
-        </button>
-      </div>
-    </div>
+    <app-employee-editor [employee]="employee"></app-employee-editor>
   </mat-expansion-panel>
 </div>

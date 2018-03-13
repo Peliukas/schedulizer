@@ -21,6 +21,8 @@ import { ConfirmationBoxComponent } from './components/confirmation-box/confirma
 import { PositionsMainComponent } from "./views/positions-main/positions-main.component";
 import { ModelListViewComponent } from './views/model-list-view/model-list-view.component';
 import { AddBreakComponent } from './components/add-break/add-break.component';
+import { ScheduleEditorComponent } from './components/schedule-editor/schedule-editor.component';
+import { EmployeeEditorComponent } from './components/employee-editor/employee-editor.component';
 
 
 const routes: Routes = [
@@ -42,7 +44,9 @@ const routes: Routes = [
     ConfirmationBoxComponent,
     PositionsMainComponent,
     ModelListViewComponent,
-    AddBreakComponent
+    AddBreakComponent,
+    ScheduleEditorComponent,
+    EmployeeEditorComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

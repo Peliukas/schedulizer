@@ -1,0 +1,131 @@
+<mat-tab-group>
+  <mat-tab label="Schedule summary">
+    <div class="schedule-list-item-content">
+      <div class="flex">
+        <div class="input-field-wrapper" *ngIf="schedule">
+          <mat-form-field>
+            <input placeholder="Schedule ID" matInput disabled id="schedule_id" [(ngModel)]="schedule.id">
+          </mat-form-field>
+        </div>
+        <div class="input-field-wrapper">
+          <mat-form-field>
+            <input placeholder="Schedule name" matInput id="schedule_name" [(ngModel)]="schedule.doc.schedule_name">
+          </mat-form-field>
+        </div>
+        <div class="input-field-wrapper">
+          <mat-form-field>
+            <input placeholder="Description" matInput id="description" [(ngModel)]="schedule.doc.schedule_description">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <button mat-raised-button
+                (click)="saveChanges({id: schedule.id})">
+          <i class="material-icons">&#xE161;</i>
+          Save changes
+        </button>
+        <button (click)="deleteSelectedSchedule(schedule.id)" mat-raised-button><i
+          class="material-icons">&#xE92B;</i> Delete schedule
+        </button>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Schedule settings">
+    <div class="row">
+      <div class="col-12">
+        <div class="col-4" [class.hidden]="!selectMultipleDays">
+          <mat-card class="selected-day-list-wrapper">
+            <mat-card-title></mat-card-title>
+            <mat-card-content>
+              <h4 *ngIf="selectedWorkDayList.length < 1">Click on a day to add it to editing list</h4>
+              <mat-list dense *ngIf="selectedWorkDayList.length > 0">
+                <mat-option *ngFor="let workDay of selectedWorkDayList">
+                  {{workDay.title | date:'mediumDate'}}
+                </mat-option>
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div [class.col-8]="selectMultipleDays">
+          <mat-card>
+            <mat-card-content>
+              <div>
+                <h4 class="text-center" *ngIf="selectedCalendarDay && !selectMultipleDays">{{selectedCalendarDay.date |
+                  date:'mediumDate'}}</h4>
+                <h4 class="text-center" *ngIf="!selectedCalendarDay && !selectMultipleDays">Select day</h4>
+                <div class="">
+                  <div class="flex-baseline-vertical">
+                    <mat-form-field>
+                      <input matInput [formControl]="startTimeInputControl" type="time" #startTime
+                             placeholder="Start time">
+                    </mat-form-field>
+                    <mat-form-field>
+                      <input matInput [formControl]="endTimeInputControl" type="time" #endTime placeholder="End time">
+                    </mat-form-field>
+                  </div>
+                  <div class="flex">
+                    <mat-chip-list #breakChips>
+                      <mat-chip matTooltip="Click to delete" (click)="deleteBreak(break.start, break.end)" *ngFor="let break of breakList">
+                        <i class="material-icons">&#xE034;</i> {{break.start}} - {{break.end}}
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-space-between flex-baseline-vertical">
+                <div class="flex">
+                  <div *ngIf="!selectMultipleDays">
+                    <button mat-raised-button
+                            (click)="saveWorkDayChanges()">
+                      Save changes
+                    </button>
+                    <button mat-raised-button (click)="openAddBreakWindow()">Add break</button>
+                    <button mat-raised-button (click)="clearCells()">Clear</button>
+                  </div>
+                  <div *ngIf="selectMultipleDays">
+                    <button mat-raised-button
+                            (click)="saveScheduleChanges({start_time: startTime.value, end_time: endTime.value})">
+                      Save
+                    </button>
+                    <button mat-raised-button (click)="openAddBreakWindow()">Add break</button>
+                    <button mat-raised-button (click)="clearCells()">Clear</button>
+                  </div>
+                </div>
+                <mat-slide-toggle [(ngModel)]="selectMultipleDays">Select multiple days</mat-slide-toggle>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="calendar-header flex-space-between">
+        <button mat-button class="previous-month" (click)="previousMonth()"><i class="material-icons">&#xE314;</i>
+          Previous month
+        </button>
+        <div class="current-date-label">
+          <strong>{{viewDate | date:'mediumDate' }}</strong>
+        </div>
+        <button mat-button class="next-month" (click)="nextMonth()">Next month <i
+          class="material-icons">&#xE315;</i></button>
+      </div>
+      <div class="col-12">
+        <ng-template #customCellTemplate let-day="day" let-locale="locale">
+          <div class="cal-cell-top" (click)="cellClicked(customCellTemplate)" [class.selected-cell]="day.date === selectedCalendarDay.date">
+            <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+            <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+          </div>
+          <span class="work-day-calendar-cell-time">
+                <small *ngIf="day.events[0]">{{ day.events[0].title }}</small>
+          </span>
+        </ng-template>
+        <mwl-calendar-month-view
+          [viewDate]="viewDate"
+          [events]="calendarWorkDays"
+          [cellTemplate]="customCellTemplate"
+          (dayClicked)="dayClicked($event)">
+        </mwl-calendar-month-view>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

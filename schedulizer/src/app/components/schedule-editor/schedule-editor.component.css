@@ -1,0 +1,43 @@
+.current-date-label{
+  font-size: large;
+}
+
+.schedule-list-item-content{
+  margin: 20px 0 20px 0 ;
+}
+
+.calendar-header{
+  margin: 10px 0 10px 0;
+}
+
+.selected-day-list-wrapper{
+  height: 200px;
+  overflow: auto;
+}
+
+.selected-cell{
+  background: lightblue;
+}
+
+/deep/ .cal-has-events{
+  position: relative;
+}
+
+
+/deep/ .cal-day-badge{
+  display: none!important;
+}
+
+.work-day-calendar-cell-time{
+  text-align: center;
+  background: #7369ffbd;
+}
+
+.work-day-calendar-cell-time small{
+  color: white;
+  font-weight: 900;
+}
+
+mat-chip-list{
+  margin: 0px 0 20px 0px;
+}

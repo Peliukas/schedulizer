@@ -15,9 +15,29 @@ app-root{
   display: flex;
 }
 
+.flex-end{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.text-center{
+  text-align: center;
+}
+
+
 .flex-space-between{
   display: flex;
   justify-content: space-between;
+}
+
+.flex-space-around{
+  display: flex;
+  justify-content: space-around;
+}
+
+.flex-baseline-vertical{
+  display: flex;
+  align-items: baseline;
 }
 
 .right{
@@ -30,4 +50,8 @@ app-root{
 
 simple-snack-bar{
   color: white;
+}
+
+.hidden{
+  display: none;
 }

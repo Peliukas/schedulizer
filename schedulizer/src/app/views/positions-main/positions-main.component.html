@@ -8,34 +8,30 @@
         <strong>{{position.id }}</strong>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="col-12 employee-list-item-content">
-      <div class="col-6">
-        <div class="col-12 input-field-wrapper">
-          <label for="position_id">position ID: </label>
+    <div class="position-list-item-content">
+      <div class="flex-space-between">
+        <div class="input-field-wrapper">
           <mat-form-field>
-            <input matInput disabled id="position_id" [(ngModel)]="position.id">
+            <input matInput placeholder="Position ID" disabled id="position_id" [(ngModel)]="position.id">
           </mat-form-field>
         </div>
-        <div class="col-12 input-field-wrapper">
-          <label for="job_title">Job title: </label>
+        <div class="input-field-wrapper">
           <mat-form-field>
-            <input matInput id="job_title" [(ngModel)]="position.doc.job_title">
+            <input placeholder="Job title" matInput id="job_title" [(ngModel)]="position.doc.job_title">
           </mat-form-field>
         </div>
-        <div class="col-12 input-field-wrapper">
-          <label for="description">Description: </label>
+        <div class="input-field-wrapper">
           <mat-form-field>
-            <input matInput id="description" [(ngModel)]="position.doc.description">
+            <input matInput placeholder="Description" id="description" [(ngModel)]="position.doc.description">
           </mat-form-field>
         </div>
-        <div class="col-12 input-field-wrapper">
-          <label for="pay">Pay: </label>
+        <div class="input-field-wrapper">
           <mat-form-field>
-            <input matInput id="pay" [(ngModel)]="position.doc.pay">
+            <input matInput placeholder="Pay" id="pay" [(ngModel)]="position.doc.pay">
           </mat-form-field>
         </div>
       </div>
-      <div class="col-12 flex">
+      <div class="flex">
         <button mat-raised-button
                 (click)="saveChanges({id: position.id})">
           <i class="material-icons">&#xE161;</i>
