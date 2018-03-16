@@ -50,14 +50,12 @@ export class EmployeeEditorComponent implements OnInit {
     this.scheduleRef.findAll()
       .then(data => {
         this.scheduleList = data.rows;
-        console.log('schedules: ', data.rows);
       });
   }
 
   public saveChanges(changes: any) {
     let employee = new Employee();
     employee.find(changes._id).then(data => {
-      console.log('the changes: ', employee);
       employee.data = changes;
       employee.save() === true ?
         this.snackBar.open("Changes saved!", "OK", {duration: 3000}) :
@@ -69,7 +67,6 @@ export class EmployeeEditorComponent implements OnInit {
     this.positionRef.findAll()
       .then(data => {
         this.positionList = data.rows;
-        console.log("positions: " ,data.rows);
       });
   }
 

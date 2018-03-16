@@ -20,7 +20,7 @@
       </div>
       <div class="flex">
         <button mat-raised-button
-                (click)="saveChanges({id: schedule.id})">
+                (click)="saveChanges()">
           <i class="material-icons">&#xE161;</i>
           Save changes
         </button>
@@ -65,7 +65,8 @@
                   </div>
                   <div class="flex">
                     <mat-chip-list #breakChips>
-                      <mat-chip matTooltip="Click to delete" (click)="deleteBreak(break.start, break.end)" *ngFor="let break of breakList">
+                      <mat-chip matTooltip="Click to delete" (click)="deleteBreak(break.start, break.end)"
+                                *ngFor="let break of breakList">
                         <i class="material-icons">&#xE034;</i> {{break.start}} - {{break.end}}
                       </mat-chip>
                     </mat-chip-list>
@@ -111,8 +112,10 @@
       </div>
       <div class="col-12">
         <ng-template #customCellTemplate let-day="day" let-locale="locale">
-          <div class="cal-cell-top" (click)="cellClicked(customCellTemplate)" [class.selected-cell]="day.date === selectedCalendarDay.date">
-            <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+          <div *ngIf="selectMultipleDays"  #local="appLocalVariables" [appLocalVariables]="{clicked: false}" (click)="local.clicked = dayClicked(day)" class="cal-cell-top" [class.selected-cell]="local.clicked">
+            <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+          </div>
+          <div *ngIf="!selectMultipleDays" (click)="dayClicked(day)" class="cal-cell-top" [class.selected-cell]="day.date === selectedCalendarDay.date">
             <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
           </div>
           <span class="work-day-calendar-cell-time">
@@ -123,7 +126,8 @@
           [viewDate]="viewDate"
           [events]="calendarWorkDays"
           [cellTemplate]="customCellTemplate"
-          (dayClicked)="dayClicked($event)">
+          [refresh]="refresh"
+        >
         </mwl-calendar-month-view>
       </div>
     </div>

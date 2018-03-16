@@ -4,6 +4,7 @@ import {MatDialog, MatSnackBar, MatChipList} from '@angular/material';
 import {Schedule} from "../../models/schedule";
 import {AddBreakComponent} from "../add-break/add-break.component";
 import {ConfirmationBoxComponent} from "../confirmation-box/confirmation-box.component";
+import {Subject} from "rxjs/Subject";
 
 
 @Component({
@@ -23,6 +24,7 @@ export class ScheduleEditorComponent implements OnInit {
   selectedCalendarDay: any = '';
   startTimeInputControl: FormControl;
   endTimeInputControl: FormControl;
+  refresh: Subject<any> = new Subject();
 
   constructor(private snackBar: MatSnackBar, private matDialog: MatDialog) {
   }
@@ -31,10 +33,10 @@ export class ScheduleEditorComponent implements OnInit {
     this.startTimeInputControl = new FormControl();
     this.endTimeInputControl = new FormControl();
     this.getCalendarWorkDays();
-    console.log(this.calendarWorkDays);
   }
 
   public deleteSelectedSchedule() {
+    console.log('deleting schedule');
     let schedule = new Schedule();
     schedule.find(this.schedule.doc._id)
       .then(data => {
@@ -52,17 +54,18 @@ export class ScheduleEditorComponent implements OnInit {
   }
 
 
-  public saveChanges(changes: any) {
-    let schedule = new Schedule();
-    schedule.find(changes.id)
+  public saveChanges() {
+    let scheduleRef = new Schedule();
+    scheduleRef.find(this.schedule.id)
       .then(data => {
-        console.log(changes);
-        schedule.data = changes;
-        schedule.save() === true ?
+        scheduleRef.data = data;
+        scheduleRef.save() === true ?
           this.snackBar.open("Changes saved!", "OK", {duration: 3000}) :
           this.snackBar.open("Something went wrong", "OK", {duration: 3000});
+        this.schedule.doc = scheduleRef.data;
+        this.viewDate = new Date();
+        this.getCalendarWorkDays();
       });
-
   }
 
   public nextMonth() {
@@ -73,24 +76,21 @@ export class ScheduleEditorComponent implements OnInit {
     this.viewDate = new Date(this.viewDate.setMonth(this.viewDate.getMonth() - 1));
   }
 
-  public cellClicked(cell: any){
-    console.log(cell);
-    // clickedCell.nativeElement.styles = '{background-color: white;}';
-  }
 
-  public dayClicked(cell: any) {
-    console.log(cell);
+  public dayClicked(day: any) {
+    console.log(day);
     if (this.selectMultipleDays) {
-      this.addWorkDay(cell.day.date);
+      this.addWorkDay(day.date);
+      return true
     } else {
-      if (cell.day.events.length > 0) {
-        this.setWorkDayInputFields(cell.day);
+      if (day.events.length > 0) {
+        this.setWorkDayInputFields(day);
       }
       else {
         this.startTimeInputControl.reset();
         this.endTimeInputControl.reset();
         this.breakList = [];
-        this.selectedCalendarDay = cell.day;
+        this.selectedCalendarDay = day;
       }
     }
   }
@@ -108,7 +108,6 @@ export class ScheduleEditorComponent implements OnInit {
       for (let workDay of this.selectedWorkDayList) {
         if (workDay.title.getDate() === date.getDate()) {
           this.selectedWorkDayList.splice(this.selectedWorkDayList.indexOf(workDay), 1);
-          this.viewDate = date;
           return;
         }
       }
@@ -117,8 +116,8 @@ export class ScheduleEditorComponent implements OnInit {
         color: '',
         start: date
       });
+      this.refresh.next();;
     }
-    this.viewDate = new Date();
   }
 
   public saveWorkDayChanges() {
@@ -136,14 +135,18 @@ export class ScheduleEditorComponent implements OnInit {
         scheduleRef.save();
         this.schedule.doc = scheduleRef.data;
         this.snackBar.open("Work day changes were saved!", "OK", {duration: 3000});
+        this.getCalendarWorkDays();
+        this.refresh.next();
         return true;
       }
     }
     this.schedule.doc.work_days.push(tempDay); //work day not found, pushing
-    scheduleRef.setWorkDays(this.schedule.doc);
+    scheduleRef.setWorkDays(this.schedule.doc.work_days);
     scheduleRef.save();
     this.schedule.doc = scheduleRef.data;
     this.snackBar.open("New work day addded!", "OK", {duration: 3000});
+    this.getCalendarWorkDays();
+    this.refresh.next();
   }
 
   public saveScheduleChanges(workDayTime: any) {
@@ -165,6 +168,8 @@ export class ScheduleEditorComponent implements OnInit {
     scheduleRef.save();
     this.snackBar.open("Schedule changes were saved!", "OK", {duration: 3000});
     this.schedule.doc = scheduleRef.data;
+    this.getCalendarWorkDays();
+    this.refresh.next();
   }
 
   public openAddBreakWindow() {
@@ -217,8 +222,10 @@ export class ScheduleEditorComponent implements OnInit {
         }
       }
       this.schedule.doc = scheduleRef.data;
-      this.selectedWorkDayList = [];
       scheduleRef.save();
+      this.resetSelection();
+      this.getCalendarWorkDays();
+      this.refresh.next();
       this.snackBar.open("Cell cleared!", "OK", {duration: 3000});
     } else {
       if(this.selectedCalendarDay.events.length > 0){
@@ -229,6 +236,8 @@ export class ScheduleEditorComponent implements OnInit {
             this.snackBar.open("Cell cleared!", "OK", {duration: 3000});
             this.resetSelection();
             this.schedule.doc = scheduleRef.data;
+            this.getCalendarWorkDays();
+            this.refresh.next();
             return;
           }
         }

@@ -23,6 +23,7 @@ import { ModelListViewComponent } from './views/model-list-view/model-list-view.
 import { AddBreakComponent } from './components/add-break/add-break.component';
 import { ScheduleEditorComponent } from './components/schedule-editor/schedule-editor.component';
 import { EmployeeEditorComponent } from './components/employee-editor/employee-editor.component';
+import { LocalVariablesDirective } from './directives/local-variables.directive';
 
 
 const routes: Routes = [
@@ -46,7 +47,8 @@ const routes: Routes = [
     ModelListViewComponent,
     AddBreakComponent,
     ScheduleEditorComponent,
-    EmployeeEditorComponent
+    EmployeeEditorComponent,
+    LocalVariablesDirective
   ],
   imports: [
     RouterModule.forRoot(routes),
