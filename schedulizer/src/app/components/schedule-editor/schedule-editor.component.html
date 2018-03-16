@@ -112,7 +112,8 @@
       </div>
       <div class="col-12">
         <ng-template #customCellTemplate let-day="day" let-locale="locale">
-          <div *ngIf="selectMultipleDays"  #local="appLocalVariables" [appLocalVariables]="{clicked: false}" (click)="local.clicked = dayClicked(day)" class="cal-cell-top" [class.selected-cell]="local.clicked">
+          <div *ngIf="selectMultipleDays"  #local="appLocalVariables" [appLocalVariables]="{clicked: false}" (click)="local.clicked = !local.clicked" (mouseup)="addWorkDay(day.date)" class="cal-cell-top" [class.selected-cell]="local.clicked">
+            {{local.clicked}}
             <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
           </div>
           <div *ngIf="!selectMultipleDays" (click)="dayClicked(day)" class="cal-cell-top" [class.selected-cell]="day.date === selectedCalendarDay.date">

@@ -81,7 +81,6 @@ export class ScheduleEditorComponent implements OnInit {
     console.log(day);
     if (this.selectMultipleDays) {
       this.addWorkDay(day.date);
-      return true
     } else {
       if (day.events.length > 0) {
         this.setWorkDayInputFields(day);
@@ -108,7 +107,7 @@ export class ScheduleEditorComponent implements OnInit {
       for (let workDay of this.selectedWorkDayList) {
         if (workDay.title.getDate() === date.getDate()) {
           this.selectedWorkDayList.splice(this.selectedWorkDayList.indexOf(workDay), 1);
-          return;
+          return false;
         }
       }
       this.selectedWorkDayList.push({
@@ -116,7 +115,7 @@ export class ScheduleEditorComponent implements OnInit {
         color: '',
         start: date
       });
-      this.refresh.next();;
+      return true;
     }
   }
 
