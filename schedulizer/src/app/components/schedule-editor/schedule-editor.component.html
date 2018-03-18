@@ -50,9 +50,6 @@
           <mat-card>
             <mat-card-content>
               <div>
-                <h4 class="text-center" *ngIf="selectedCalendarDay && !selectMultipleDays">{{selectedCalendarDay.date |
-                  date:'mediumDate'}}</h4>
-                <h4 class="text-center" *ngIf="!selectedCalendarDay && !selectMultipleDays">Select day</h4>
                 <div class="">
                   <div class="flex-baseline-vertical">
                     <mat-form-field>
@@ -62,6 +59,7 @@
                     <mat-form-field>
                       <input matInput [formControl]="endTimeInputControl" type="time" #endTime placeholder="End time">
                     </mat-form-field>
+                    <mat-checkbox [(ngModel)]="isHoliday">Holiday</mat-checkbox>
                   </div>
                   <div class="flex">
                     <mat-chip-list #breakChips>
@@ -105,31 +103,62 @@
           Previous month
         </button>
         <div class="current-date-label">
-          <strong>{{viewDate | date:'mediumDate' }}</strong>
+          <h4 class="text-center"></h4>
+          <strong *ngIf="selectedCalendarDay && !selectMultipleDays">{{selectedCalendarDay.date |
+            date:'mediumDate'}}</strong>
         </div>
         <button mat-button class="next-month" (click)="nextMonth()">Next month <i
           class="material-icons">&#xE315;</i></button>
       </div>
       <div class="col-12">
-        <ng-template #customCellTemplate let-day="day" let-locale="locale">
-          <div *ngIf="selectMultipleDays"  #local="appLocalVariables" [appLocalVariables]="{clicked: false}" (click)="local.clicked = !local.clicked" (mouseup)="addWorkDay(day.date)" class="cal-cell-top" [class.selected-cell]="local.clicked">
-            {{local.clicked}}
-            <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
-          </div>
-          <div *ngIf="!selectMultipleDays" (click)="dayClicked(day)" class="cal-cell-top" [class.selected-cell]="day.date === selectedCalendarDay.date">
-            <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
-          </div>
-          <span class="work-day-calendar-cell-time">
+        <mat-tab-group>
+          <mat-tab label="Month">
+            <ng-template #customCellTemplate let-day="day" let-locale="locale">
+              <div *ngIf="selectMultipleDays" #local="appLocalVariables" [appLocalVariables]="{clicked: false}"
+                   (click)="local.clicked = !local.clicked" (mouseup)="addWorkDay(day.date)" class="cal-cell-top"
+                   [class.selected-cell]="local.clicked">
+                <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+              </div>
+              <div *ngIf="!selectMultipleDays" (click)="dayClicked(day)" class="cal-cell-top"
+                   [class.selected-cell]="day.date === selectedCalendarDay.date">
+                <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+              </div>
+              <span class="work-day-calendar-cell-time">
                 <small *ngIf="day.events[0]">{{ day.events[0].title }}</small>
           </span>
-        </ng-template>
-        <mwl-calendar-month-view
-          [viewDate]="viewDate"
-          [events]="calendarWorkDays"
-          [cellTemplate]="customCellTemplate"
-          [refresh]="refresh"
-        >
-        </mwl-calendar-month-view>
+            </ng-template>
+            <mwl-calendar-month-view
+              [viewDate]="viewDate"
+              [events]="calendarWorkDays"
+              [cellTemplate]="customCellTemplate"
+              [weekStartsOn]="1"
+              [refresh]="refresh">
+            </mwl-calendar-month-view>
+          </mat-tab>
+          <mat-tab label="Week">
+            <ng-template #weekDayCustomCell let-day="day" let-locale="locale">
+              <div *ngIf="selectMultipleDays" #local="appLocalVariables" [appLocalVariables]="{clicked: false}"
+                   (click)="local.clicked = !local.clicked" (mouseup)="addWorkDay(day.date)" class="cal-cell-top"
+                   [class.selected-cell]="local.clicked">
+                <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+              </div>
+              <div *ngIf="!selectMultipleDays" (click)="dayClicked(day)" class="cal-cell-top"
+                   [class.selected-cell]="day.date === selectedCalendarDay.date">
+                <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+              </div>
+              <span class="work-day-calendar-cell-time">
+                <small *ngIf="day.events[0]">{{ day.events[0].title }}</small>
+              </span>
+            </ng-template>
+            <mwl-calendar-week-view
+              [viewDate]="viewDate"
+              [weekStartsOn]="1"
+              [customTemplate]="weekDayCustomCell"
+              [events]="calendarWorkDays"
+              [refresh]="refresh">
+            </mwl-calendar-week-view>
+          </mat-tab>
+        </mat-tab-group>
       </div>
     </div>
   </mat-tab>
