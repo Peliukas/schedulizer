@@ -4,7 +4,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatDatepickerModule, MatMenuModule, MatButtonModule, MatCardModule, MatTabsModule,
   MatTableModule, MatPaginatorModule, MatInputModule, MatSnackBarModule, MatSortModule, MatCheckboxModule,
   MatSelectModule, MatFormFieldModule, MatSidenavModule, MatGridListModule, MatListModule, MatExpansionModule,
-  MatTooltipModule, MatSlideToggleModule, MatStepperModule, MatChipsModule} from '@angular/material';
+  MatTooltipModule, MatSlideToggleModule, MatStepperModule, MatChipsModule, MatNativeDateModule} from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { StorageAdapterService } from './services/storage-adapter.service';
@@ -60,7 +60,7 @@ const routes: Routes = [
     MatDatepickerModule, MatMenuModule, MatButtonModule, MatCardModule, MatTabsModule,MatStepperModule,
     MatTableModule, MatPaginatorModule, MatInputModule, MatSnackBarModule, MatSortModule, MatCheckboxModule,
     MatSelectModule, MatFormFieldModule, MatSidenavModule, MatGridListModule, MatListModule, MatExpansionModule,
-    MatTooltipModule, MatSlideToggleModule,MatChipsModule
+    MatTooltipModule, MatSlideToggleModule,MatChipsModule, MatNativeDateModule
   ],
   providers: [StorageAdapterService],
   entryComponents: [CrudWindowComponent, ConfirmationBoxComponent, AddBreakComponent],
