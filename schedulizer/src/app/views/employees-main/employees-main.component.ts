@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+
+
 
 @Component({
   selector: 'app-employees-main',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmployeesMainComponent implements OnInit {
 
-  constructor() { }
+  @Input() employeeList: any;
+  @Input() bulkActions: any;
+
+  constructor() {
+  }
 
   ngOnInit() {
   }
+
+
 
 }

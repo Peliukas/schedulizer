@@ -36,13 +36,9 @@
   "description": "**Clone and run for a quick way to see Electron in action.**",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron/electron-quick-start.git"
+    "url": "https://github.com/Peliukas/schedulizer"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/electron/electron-quick-start/issues"
-  },
-  "homepage": "https://github.com/electron/electron-quick-start#readme"
+  "license": "ISC"
 }

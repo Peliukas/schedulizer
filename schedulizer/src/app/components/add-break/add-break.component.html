@@ -1,0 +1,7 @@
+<mat-form-field>
+  <input type="time" matInput #start placeholder="Break start">
+</mat-form-field>
+<mat-form-field>
+  <input type="time" matInput #end placeholder="Break end">
+</mat-form-field>
+<button mat-raised-button (click)="addBreak(start.value, end.value)">Add break</button>

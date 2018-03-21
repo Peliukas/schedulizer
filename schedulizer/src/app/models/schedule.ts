@@ -1,6 +1,6 @@
 import PouchDB from 'pouchdb';
 
-export class Employee {
+export class Schedule {
 
   data: any;
   db: any;
@@ -8,21 +8,18 @@ export class Employee {
   constructor() {
     this.data = {
       _id: "",
-      firstname: "",
-      lastname: "",
-      position_id: "",
-      schedule_id: ""
+      schedule_name: "",
+      schedule_description: "",
+      work_days: []
     };
-    this.db = new PouchDB('Employees');
+    this.db = new PouchDB('Schedules');
   }
 
   public setValues(data: any){
     this.data._id = data._id;
-    this.data.firstname = data.firstname;
-    this.data.lastname = data.lastname;
-    this.data.position_id = data.position_id;
-    this.data.schedue_id = data.schedule_id;
-    return true;
+    this.data.schedule_name= data.schedule_name;
+    this.data.schedule_description = data.schedule_description;
+    this.data.work_days = data.work_days;
   }
 
 
@@ -31,17 +28,24 @@ export class Employee {
       this.db.get(this.data._id).then(doc =>{
         this.data._rev = doc._rev;
         this.db.put(this.data);
+        console.log('schedule saved!');
       }, cause =>{
-        console.log('creating new employee...');
-        this.db.put(this.data);
+        if(cause.status === 404){
+          console.log('creating new schedule');
+          this.db.put(this.data);
+        }
       });
-      console.log('employee saved!');
-      return true
+      return true;
     }catch(e){
       console.log(e);
       return false;
     }
   }
+
+  public setWorkDays(workDays: any){
+    this.data.work_days = workDays;
+  }
+
 
   public delete(){
     this.db.get(this.data._id).then(doc => {
@@ -54,8 +58,8 @@ export class Employee {
 
   public async find(id: any){
     this.db.get(id)
-      .then(employee => {
-        this.data = employee;
+      .then(schedule => {
+        this.data = schedule;
       });
     return this.db.get(id);
   }
@@ -63,6 +67,7 @@ export class Employee {
   public findAll(){
     return this.db.allDocs(({include_docs: true}));
   }
+
 
 
 

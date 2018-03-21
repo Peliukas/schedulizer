@@ -1,1 +1,40 @@
-<app-sidebar-wrapper></app-sidebar-wrapper>
+<div class="row">
+  <div class="col-2">
+    <div>
+      <button mat-button name="workers" (click)="selectedModelName = 'employee'" >
+        <i class="material-icons">&#xE853;</i>
+        Employees
+      </button>
+    </div>
+    <div>
+      <button mat-button name="positions"  (click)="selectedModelName = 'position'" >
+        <i class="material-icons">&#xE8F9;</i>
+        Job positions
+      </button>
+    </div>
+    <div>
+      <button mat-button name="schedules" (click)="selectedModelName = 'schedule'">
+        <i class="material-icons">&#xE8B5;</i>
+        Schedules
+      </button>
+    </div>
+    <hr>
+    <div>
+      <button mat-button name="calendar">
+        <i class="material-icons">&#xE916;</i>
+        Calendar
+      </button>
+    </div>
+  </div>
+
+  <div class="col-10">
+    <div class="content-wrapper-container">
+          <app-page-content-wrapper *ngIf="selectedModelName === 'employee'"
+                                    [modelName]="selectedModelName"></app-page-content-wrapper>
+          <app-page-content-wrapper *ngIf="selectedModelName === 'position'"
+                                    [modelName]="selectedModelName"></app-page-content-wrapper>
+          <app-page-content-wrapper *ngIf="selectedModelName === 'schedule'"
+                                    [modelName]="selectedModelName"></app-page-content-wrapper>
+    </div>
+  </div>
+</div>
