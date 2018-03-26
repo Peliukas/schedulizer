@@ -4,19 +4,20 @@
     <div *ngIf="modelName === 'employee'">
       <div>
         <mat-form-field>
-          <input matInput type="text" disabled #employee_id value="{{firstname.value}}-{{lastname.value}}" placeholder="Employee ID">
+            <input matInput type="text" disabled #employee_id value="{{firstname.value}}-{{lastname.value}}"
+                   placeholder="Darbuotojo ID">
         </mat-form-field>
         <mat-form-field>
-          <input matInput type="text" #firstname required placeholder="Employee firstname">
+            <input matInput type="text" #firstname required placeholder="Vardas">
         </mat-form-field>
         <mat-form-field>
-          <input matInput type="text" #lastname required placeholder="Employee lastname">
+            <input matInput type="text" #lastname required placeholder="Pavardė">
         </mat-form-field>
         <mat-form-field>
-          <input matInput type="text" #position_id required placeholder="Position">
+            <input matInput type="text" #position_id required placeholder="Pareigos">
         </mat-form-field>
         <mat-form-field>
-          <input matInput type="text" #schedule_id required placeholder="Schedule">
+            <input matInput type="text" #schedule_id required placeholder="Tvarkaraštis">
         </mat-form-field>
         <button mat-button class="button-submit" (click)="addObject({_id: employee_id.value, firstname: firstname.value, lastname: lastname.value, position_id: position_id.value, schedule_id: schedule_id.value})">Submit</button>
       </div>
@@ -24,16 +25,16 @@
     <div *ngIf="modelName === 'position'">
       <div>
         <mat-form-field>
-          <input matInput type="text" disabled #position_id value="{{job_title.value}}" placeholder="Position ID">
+            <input matInput type="text" disabled #position_id value="{{job_title.value}}" placeholder="Pareigos ID">
         </mat-form-field>
         <mat-form-field>
-          <input matInput type="text" #job_title required placeholder="Title">
+            <input matInput type="text" #job_title required placeholder="Pavadinimas">
         </mat-form-field>
         <mat-form-field>
-          <input matInput type="text" #description placeholder="Description">
+            <input matInput type="text" #description placeholder="Aprašymas">
         </mat-form-field>
         <mat-form-field>
-          <input matInput type="text" #pay required placeholder="Per hour">
+            <input matInput type="text" #pay required placeholder="Uždarbis per valandą">
         </mat-form-field>
         <button mat-button class="button-submit" (click)="addObject({_id: position_id.value, job_title: job_title.value, description: description.value, pay: pay.value})">Submit</button>
       </div>
@@ -41,10 +42,11 @@
     <div *ngIf="modelName === 'schedule'">
       <div>
         <mat-form-field>
-          <input matInput type="text" #schedule_name required value="{{schedule_name.value}}" placeholder="Schedule name">
+            <input matInput type="text" #schedule_name required value="{{schedule_name.value}}"
+                   placeholder="Tvarkaraščio pavadinimas">
         </mat-form-field>
         <mat-form-field>
-          <textarea matInput type="text" #schedule_description placeholder="Schedule description"></textarea>
+            <textarea matInput type="text" #schedule_description placeholder="Aprašymas"></textarea>
         </mat-form-field>
         <button mat-button class="button-submit" (click)="addObject({_id: schedule_name.value, schedule_name: schedule_name.value, schedule_description: schedule_description.value, work_days: [], date: ''})">Submit</button>
       </div>

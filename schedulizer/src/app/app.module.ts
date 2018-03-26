@@ -24,6 +24,7 @@ import { AddBreakComponent } from './components/add-break/add-break.component';
 import { ScheduleEditorComponent } from './components/schedule-editor/schedule-editor.component';
 import { EmployeeEditorComponent } from './components/employee-editor/employee-editor.component';
 import { LocalVariablesDirective } from './directives/local-variables.directive';
+import {CalendarFreeDaySettingsComponent} from './views/calendar-free-day-settings/calendar-free-day-settings.component';
 
 
 const routes: Routes = [
@@ -48,7 +49,8 @@ const routes: Routes = [
     AddBreakComponent,
     ScheduleEditorComponent,
     EmployeeEditorComponent,
-    LocalVariablesDirective
+      LocalVariablesDirective,
+      CalendarFreeDaySettingsComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

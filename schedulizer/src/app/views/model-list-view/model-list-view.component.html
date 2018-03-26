@@ -4,16 +4,16 @@
       <div class="crud-control-button-group">
         <button mat-raised-button (click)="showAddObjectModal()">
           <i class="material-icons">&#xE7FE;</i>
-          Add new {{modelName}}
+          Pridėti naują
         </button>
         <button mat-raised-button *ngIf="bulkActions === true" (click)="deleteSelectedObject()">
           <i class="material-icons">&#xE92B;</i>
-          Delete selected {{modelName}}s
+          Panaikinti
         </button>
       </div>
-      <div class="crud-control-bulk-actions-wrapper">
-        <mat-slide-toggle [(ngModel)]="bulkActions">Bulk actions</mat-slide-toggle>
-      </div>
+      <!--<div class="crud-control-bulk-actions-wrapper">-->
+      <!--<mat-slide-toggle [(ngModel)]="bulkActions">Masinis veiksmas</mat-slide-toggle>-->
+      <!--</div>-->
     </div>
   </div>
   <hr>
@@ -28,10 +28,10 @@
       <app-schedules-main [scheduleList]="objectList" [bulkActions]="bulkActions"></app-schedules-main>
     </div>
   </div>
-  <div *ngIf="bulkActions">
-    <hr>
-    <div class="col-12 crud-control-mark-all-checkbox">
-      <mat-checkbox labelPosition="before">Mark all</mat-checkbox>
-    </div>
-  </div>
+  <!--<div *ngIf="bulkActions">-->
+  <!--<hr>-->
+  <!--<div class="col-12 crud-control-mark-all-checkbox">-->
+  <!--<mat-checkbox labelPosition="before">Pasirinkti visus</mat-checkbox>-->
+  <!--</div>-->
+  <!--</div>-->
 </div>

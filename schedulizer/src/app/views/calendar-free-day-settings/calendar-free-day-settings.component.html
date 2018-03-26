@@ -1,0 +1,47 @@
+<mat-card>
+    <mat-card-content>
+        <h5>Išeiginių kalendorius</h5>
+        <div class="row">
+            <div>
+                <mat-form-field>
+                    <input matInput [matDatepicker]="freeDayPicker" [formControl]="freeDayDateControl" type="text"
+                           #periodEndDate
+                           placeholder="Išeiginės Data">
+                    <mat-datepicker-toggle matSuffix [for]="freeDayPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #freeDayPicker></mat-datepicker>
+                </mat-form-field>
+                <button mat-raised-button>Pridėti išeiginę</button>
+                <button mat-raised-button>Panaikinti išeiginę</button>
+            </div>
+            <ng-template #customCellTemplate let-day="day" let-locale="locale">
+                <div (click)="dayClicked(day)" class="cal-cell-top"
+                     [class.selected-cell]="day.date === selectedCalendarDay.date">
+                    <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+                </div>
+                <span class="work-day-calendar-cell-time">
+                <small *ngIf="day.events[0]">{{ day.events[0].title }}</small>
+          </span>
+            </ng-template>
+            <div class="calendar-header flex-space-between">
+                <button mat-button class="previous-month" (click)="previousMonth()"><i
+                        class="material-icons">&#xE314;</i>
+                    Praėjęs mėnuo
+                </button>
+                <div class="current-date-label">
+                    <strong *ngIf="viewDate">{{viewDate |
+                        date:'mediumDate'}}</strong>
+                </div>
+                <button mat-button class="next-month" (click)="nextMonth()">Sekantis mėnuo <i
+                        class="material-icons">&#xE315;</i></button>
+            </div>
+
+            <mwl-calendar-month-view
+                    [viewDate]="viewDate"
+                    [events]="calendarFreeDays"
+                    [cellTemplate]="customCellTemplate"
+                    [weekStartsOn]="1"
+                    [refresh]="refresh">
+            </mwl-calendar-month-view>
+        </div>
+    </mat-card-content>
+</mat-card>
