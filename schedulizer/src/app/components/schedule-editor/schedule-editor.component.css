@@ -62,3 +62,20 @@ mat-chip-list{
   justify-content: center;
   align-items: center;
 }
+
+.selected-weekday {
+    background: gray;
+}
+
+.cal-overlay {
+    position: absolute;
+    background: #ffffff57;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    box-shadow: 0px 0px 5px 0px lightgrey;
+}
+
+.apply-schedule-period-button {
+    margin-top: 20px;
+}

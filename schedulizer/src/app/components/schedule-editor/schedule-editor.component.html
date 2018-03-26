@@ -6,58 +6,41 @@
   </div>
   <div class="col-4">
     <mat-form-field>
-      <input placeholder="Tvarkaraščio pavadinimas" matInput id="schedule_name" [(ngModel)]="schedule.doc.schedule_name">
+      <input placeholder="Tvarkaraščio pavadinimas" matInput id="schedule_name"
+             [(ngModel)]="schedule.doc.schedule_name">
     </mat-form-field>
   </div>
   <div class="col-4">
     <mat-form-field>
-      <input placeholder="Tvarkaraščio aprašymas" matInput id="description" [(ngModel)]="schedule.doc.schedule_description">
+      <input placeholder="Tvarkaraščio aprašymas" matInput id="description"
+             [(ngModel)]="schedule.doc.schedule_description">
     </mat-form-field>
   </div>
 </div>
 <div class="row">
   <div class="col-12">
-    <mat-card *ngIf="weekDaySelectionMode">
-      <mat-card-content>
-        <!--<h5>Pagal savaitės dieną</h5>-->
-        <div class="row">
-          <div class="col-6">
-            <mat-form-field>
-              <input matInput [matDatepicker]="periodStartPicker" [formControl]="periodStartDateControl" type="date" #periodStartDate
-                     placeholder="Termino pradžia">
-              <mat-datepicker-toggle matSuffix [for]="periodStartPicker"></mat-datepicker-toggle>
-              <mat-datepicker #periodStartPicker></mat-datepicker>
-            </mat-form-field>
-          </div>
-          <div class="col-6">
-            <mat-form-field>
-              <input matInput [matDatepicker]="periodEndPicker" [formControl]="periodEndDateControl" type="date" #periodEndDate
-                     placeholder="Termino pabaiga">
-              <mat-datepicker-toggle matSuffix [for]="periodEndPicker"></mat-datepicker-toggle>
-              <mat-datepicker #periodEndPicker></mat-datepicker>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row">
-          <div class="work-day-cell" *ngFor="let weekDay of weekDayList" (click)="weekDayClicked(weekDay)">
-            <strong>{{weekDay.weekDayName}}</strong>
-            <p *ngIf="weekDay.selected">Selected!</p>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
     <mat-card>
+      <mat-card-title>
+        <div class="row">
+          <div class="col-12">
+            <mat-slide-toggle [(ngModel)]="weekDaySelectionMode">Pridėti terminą</mat-slide-toggle>
+          </div>
+        </div>
+      </mat-card-title>
       <mat-card-content>
         <div class="row">
+          <h5>Darbo dienos nustatymai</h5>
           <div class="col-6">
             <mat-form-field>
-              <input matInput [formControl]="startTimeInputControl" type="time" #startTime
+              <input matInput (change)="weekDayTimeChange()" [formControl]="startTimeInputControl" type="time"
+                     #startTime
                      placeholder="Darbo dienos pradžia">
             </mat-form-field>
           </div>
           <div class="col-6">
             <mat-form-field>
-              <input matInput [formControl]="endTimeInputControl" type="time" #endTime placeholder="Darbo dienos pabaiga">
+              <input matInput (change)="weekDayTimeChange()" [formControl]="endTimeInputControl" type="time" #endTime
+                     placeholder="Darbo dienos pabaiga">
             </mat-form-field>
           </div>
           <div class="col-12 flex-space-between flex-center-vertical breaks-and-holiday">
@@ -82,15 +65,58 @@
             </div>
             <div *ngIf="selectMultipleDays">
               <button mat-raised-button
-                      (click)="saveScheduleChanges({start_time: startTime.value, end_time: endTime.value})">
-                Išsaugoti pakeitimus
+                      (click)="saveScheduleChanges()">
+                Išsaugoti tvarkaraštį
               </button>
               <button mat-raised-button (click)="openAddBreakWindow()">Pridėti pertrauką</button>
               <button mat-raised-button (click)="clearCells()">Išvalyti</button>
             </div>
           </div>
-          <mat-slide-toggle [(ngModel)]="selectMultipleDays">Pasirinkti keletą dienų</mat-slide-toggle>
-          <mat-slide-toggle [(ngModel)]="weekDaySelectionMode">Pridėti terminą</mat-slide-toggle>
+          <mat-slide-toggle [disabled]="weekDaySelectionMode" [(ngModel)]="selectMultipleDays">Pasirinkti keletą dienų
+          </mat-slide-toggle>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="weekDaySelectionMode">
+      <mat-card-content>
+        <div class="row">
+          <h5>Termino konfigūravimas</h5>
+          <div class="col-6">
+            <mat-form-field>
+              <input matInput [matDatepicker]="periodStartPicker" [formControl]="periodStartDateControl" type="text"
+                     #periodStartDate
+                     placeholder="Termino pradžia">
+              <mat-datepicker-toggle matSuffix [for]="periodStartPicker"></mat-datepicker-toggle>
+              <mat-datepicker #periodStartPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-6">
+            <mat-form-field>
+              <input matInput [matDatepicker]="periodEndPicker" [formControl]="periodEndDateControl" type="text"
+                     #periodEndDate
+                     placeholder="Termino pabaiga">
+              <mat-datepicker-toggle matSuffix [for]="periodEndPicker"></mat-datepicker-toggle>
+              <mat-datepicker #periodEndPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="work-day-cell" *ngFor="let weekDay of weekDayList"
+               [class.selected-weekday]="weekDay.selected"
+               (click)="weekDayClicked(weekDay)">
+            <div>
+              <strong>{{weekDay.weekDayName}}</strong>
+              <div class="flex-space-around" *ngIf="weekDay.start_time && weekDay.end_time">
+                <small>{{weekDay.start_time}}</small>
+                <small>- {{weekDay.end_time}}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <button class="apply-schedule-period-button" [disabled]="week" (click)="setPeriod()" mat-raised-button>
+            Pritaikyti terminą
+          </button>
         </div>
       </mat-card-content>
     </mat-card>
@@ -125,12 +151,15 @@
                 <small *ngIf="day.events[0]">{{ day.events[0].title }}</small>
           </span>
     </ng-template>
-    <mwl-calendar-month-view
-      [viewDate]="viewDate"
-      [events]="calendarWorkDays"
-      [cellTemplate]="customCellTemplate"
-      [weekStartsOn]="1"
-      [refresh]="refresh">
-    </mwl-calendar-month-view>
+    <div class="row">
+      <mwl-calendar-month-view
+              [viewDate]="viewDate"
+              [events]="calendarWorkDays"
+              [cellTemplate]="customCellTemplate"
+              [weekStartsOn]="1"
+              [refresh]="refresh">
+      </mwl-calendar-month-view>
+      <div [class.cal-overlay]="weekDaySelectionMode"></div>
+    </div>
   </div>
 </div>

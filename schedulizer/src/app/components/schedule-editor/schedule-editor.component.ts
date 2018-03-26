@@ -37,42 +37,49 @@ export class ScheduleEditorComponent implements OnInit {
   ngOnInit() {
     this.startTimeInputControl = new FormControl();
     this.endTimeInputControl = new FormControl();
-    this.periodStartDateControl= new FormControl();
+    this.periodStartDateControl = new FormControl();
     this.periodEndDateControl = new FormControl();
     this.getCalendarWorkDays();
     this.generateWeekDays();
   }
 
-  public generateWeekDays(){
-      this.weekDayList = [];
-      this.weekDayList[0] = {
-        weekDayName: 'Pir',
-        selected: false
-      }
-      this.weekDayList[1] = {
-        weekDayName: 'Ant',
-        selected: false
-      }
-      this.weekDayList[2] = {
-        weekDayName: 'Tre',
-        selected: false
-      }
-      this.weekDayList[3] = {
-        weekDayName: 'Ket',
-        selected: false
-      }
-      this.weekDayList[4] = {
-        weekDayName: 'Pen',
-        selected: false
-      }
-      this.weekDayList[5] = {
-        weekDayName: 'Še',
-        selected: false
-      }
-      this.weekDayList[6] = {
-        weekDayName: 'Se',
-        selected: false
-      }
+  public generateWeekDays() {
+    this.weekDayList = [];
+    this.weekDayList[0] = {
+      weekDayName: 'Pir',
+      weekDayNumber: 1,
+      selected: false
+    }
+    this.weekDayList[1] = {
+      weekDayName: 'Ant',
+      weekDayNumber: 2,
+      selected: false
+    }
+    this.weekDayList[2] = {
+      weekDayName: 'Tre',
+      weekDayNumber: 3,
+      selected: false
+    }
+    this.weekDayList[3] = {
+      weekDayName: 'Ket',
+      weekDayNumber: 4,
+      selected: false
+    }
+    this.weekDayList[4] = {
+      weekDayName: 'Pen',
+      weekDayNumber: 5,
+      selected: false
+    }
+    this.weekDayList[5] = {
+      weekDayName: 'Še',
+      weekDayNumber: 6,
+      selected: false
+    }
+    this.weekDayList[6] = {
+      weekDayName: 'Se',
+      weekDayNumber: 0,
+      selected: false
+    }
   }
 
   public deleteSelectedSchedule() {
@@ -117,8 +124,6 @@ export class ScheduleEditorComponent implements OnInit {
   }
 
   public dayClicked(day: any) {
-    console.log(day);
-    // this.getWeekNumber(day.date);
     if (this.selectMultipleDays) {
       this.addWorkDay(day.date);
     } else {
@@ -157,19 +162,77 @@ export class ScheduleEditorComponent implements OnInit {
     }
   }
 
-  public weekDayClicked(weekDay: any){
-    console.log(weekDay);
-    for(let i = 0; i < this.weekDayList.length; i++){
-      if(this.weekDayList[i].weekDayName === weekDay.weekDayName){
+  public weekDayClicked(weekDay: any) {
+    for (let i = 0; i < this.weekDayList.length; i++) {
+      if (this.weekDayList[i].weekDayName === weekDay.weekDayName) {
         this.weekDayList[i].selected = !this.weekDayList[i].selected;
-        return;
+        this.weekDayList[i].start_time = this.startTimeInputControl.value;
+        this.weekDayList[i].end_time = this.endTimeInputControl.value;
+        break;
       }
     }
-    console.log(this.weekDayList);
   }
 
-  public setPeriod(startDate: Date, endDate: Date){
+  public weekDayTimeChange() {
+    for (let i = 0; i < this.weekDayList.length; i++) {
+      if (this.weekDayList[i].selected) {
+        this.weekDayList[i].start_time = this.startTimeInputControl.value ? this.startTimeInputControl.value : '';
+        this.weekDayList[i].end_time = this.endTimeInputControl.value ? this.endTimeInputControl.value : '';
+      }
+    }
+  }
 
+  public setPeriod() {
+    let workPeriod = [];
+    let periodStart = new Date(this.periodStartDateControl.value);
+    let periodEnd = new Date(this.periodEndDateControl.value);
+    while (periodStart.toISOString() < periodEnd.toISOString()) {
+      for (let weekDay of this.weekDayList) {
+        if (periodStart.getDay() === weekDay.weekDayNumber && weekDay.selected) {
+          let tempPeriodWeekDay = {
+            start_time: this.isHoliday ? '' : this.startTimeInputControl.value,
+            end_time: this.isHoliday ? '' : this.endTimeInputControl.value,
+            date: new Date(periodStart),
+            breaks: this.breakList,
+            isHoliday: this.isHoliday
+          };
+          workPeriod.push(tempPeriodWeekDay);
+          periodStart.setDate(periodStart.getDate() + 1);
+        }
+      }
+      periodStart.setDate(periodStart.getDate() + 1);
+    }
+    let scheduleRef = new Schedule();
+    scheduleRef.setValues(this.schedule.doc);
+    let tempWorkDayList = [];
+    for (let periodWorkDay of workPeriod) {
+      let dayFound = false;
+      for (let existingWorkDay of scheduleRef.data.work_days) {
+        if (new Date(existingWorkDay.date).toISOString() === new Date(periodWorkDay.date).toISOString()) {
+          dayFound = existingWorkDay;
+          for (let i = 0; i < scheduleRef.data.work_days.length; i++) {
+            if (new Date(scheduleRef.data.work_days[i].date).toISOString() === new Date(existingWorkDay.date).toISOString()) {
+              scheduleRef.data.work_days.splice(i, 1);
+              break;
+            }
+          }
+          break;
+        }
+      }
+      if (!dayFound) {
+        tempWorkDayList.push(periodWorkDay);
+      } else {
+        tempWorkDayList.push(dayFound);
+      }
+    }
+    let combined = tempWorkDayList.concat(scheduleRef.data.work_days);
+    this.schedule.doc.work_days = combined;
+    scheduleRef.data.work_days = combined;
+    scheduleRef.save();
+    this.resetSelection();
+    this.getCalendarWorkDays();
+    this.refresh.next();
+    this.snackBar.open("Period has been set!", "OK", {duration: 3000});
   }
 
 
@@ -183,7 +246,7 @@ export class ScheduleEditorComponent implements OnInit {
       breaks: this.breakList,
       isHoliday: this.isHoliday
     };
-    for (let i = 0; i < scheduleRef.data.work_days.length; i++ ) { //work day exists, set new values
+    for (let i = 0; i < scheduleRef.data.work_days.length; i++) { //work day exists, set new values
       if (new Date(scheduleRef.data.work_days[i].date).getDate() === new Date(this.selectedCalendarDay.date).getDate()) {
         scheduleRef.data.work_days[i] = tempDay;
         scheduleRef.save();
@@ -203,13 +266,13 @@ export class ScheduleEditorComponent implements OnInit {
     this.refresh.next();
   }
 
-  public saveScheduleChanges(workDayTime: any) {
+  public saveScheduleChanges() {
     let scheduleRef = new Schedule();
     let tempWorkDayList = [];
     for (let selectedWorkDay of this.selectedWorkDayList) {
       tempWorkDayList.push({
-        start_time: this.isHoliday ? '' : workDayTime.start_time,
-        end_time: this.isHoliday ? '' : workDayTime.end_time,
+        start_time: this.isHoliday ? '' : this.startTimeInputControl.value,
+        end_time: this.isHoliday ? '' : this.endTimeInputControl.value,
         date: selectedWorkDay.start,
         breaks: this.isHoliday ? '' : this.breakList,
         isHoliday: this.isHoliday
@@ -231,7 +294,7 @@ export class ScheduleEditorComponent implements OnInit {
     let dialogRef = this.matDialog.open(AddBreakComponent);
     dialogRef.afterClosed()
       .subscribe(data => {
-        if(data){
+        if (data) {
           this.breakList.push(data);
           this.snackBar.open('Break has been added!', "OK", {duration: 3000});
         }
@@ -241,14 +304,13 @@ export class ScheduleEditorComponent implements OnInit {
   public setWorkDayInputFields(day: any) {
     this.schedule.doc.work_days.forEach(scheduleWorkDay => {
       if (new Date(day.date).getDate() === new Date(scheduleWorkDay.date).getDate()) {
-        if(scheduleWorkDay.isHoliday){
+        if (scheduleWorkDay.isHoliday) {
           this.startTimeInputControl.disable();
           this.endTimeInputControl.disable();
           this.resetSelection();
           this.isHoliday = true;
           this.selectedCalendarDay = day;
-          return;
-        }else{
+        } else {
           this.startTimeInputControl.enable();
           this.endTimeInputControl.enable();
           this.startTimeInputControl.setValue(scheduleWorkDay.start_time);
@@ -256,7 +318,6 @@ export class ScheduleEditorComponent implements OnInit {
           this.breakList = scheduleWorkDay.breaks;
           this.isHoliday = false;
           this.selectedCalendarDay = day;
-          return;
         }
       }
     });
@@ -264,15 +325,14 @@ export class ScheduleEditorComponent implements OnInit {
 
   public getCalendarWorkDays() {
     let calendarWorkdays = [];
-    console.log(this.schedule);
-    for (let workDay of this.schedule.doc.work_days){
-      if(workDay.isHoliday){
+    for (let workDay of this.schedule.doc.work_days) {
+      if (workDay.isHoliday) {
         calendarWorkdays.push({
           title: 'Išeiginė',
           start: new Date(workDay.date),
           color: ''
         });
-      }else{
+      } else {
         calendarWorkdays.push({
           title: workDay.start_time + ' - ' + workDay.end_time,
           start: new Date(workDay.date),
@@ -301,7 +361,7 @@ export class ScheduleEditorComponent implements OnInit {
       this.refresh.next();
       this.snackBar.open("Cell cleared!", "OK", {duration: 3000});
     } else {
-      if(this.selectedCalendarDay.events.length > 0){
+      if (this.selectedCalendarDay.events) {
         for (let workDay of scheduleRef.data.work_days) {
           if (new Date(workDay.date).getDate() === new Date(this.selectedCalendarDay.date).getDate()) {
             scheduleRef.data.work_days.splice(scheduleRef.data.work_days.indexOf(workDay), 1);
@@ -318,21 +378,30 @@ export class ScheduleEditorComponent implements OnInit {
     }
   }
 
-  public resetSelection(){
+  public resetSelection() {
     this.selectedCalendarDay = '';
     this.endTimeInputControl.reset();
+    this.endTimeInputControl.enable();
     this.startTimeInputControl.reset();
+    this.startTimeInputControl.enable();
+    this.periodStartDateControl.reset();
+    this.periodEndDateControl.reset();
     this.selectedWorkDayList = [];
     this.breakList = [];
     this.isHoliday = false;
+    for (let weekDay of this.weekDayList) {
+      weekDay.start_time = null;
+      weekDay.end_time = null;
+      weekDay.selected = false;
+    }
   }
 
 
-  public deleteBreak(breakStart: any, breakEnd: any){
-    for(let i = 0; i < this.schedule.doc.work_days.length; i++){
+  public deleteBreak(breakStart: any, breakEnd: any) {
+    for (let i = 0; i < this.schedule.doc.work_days.length; i++) {
       if (new Date(this.schedule.doc.work_days[i].date).getDate() === new Date(this.selectedCalendarDay.date).getDate()) {
-        for(let j = 0; j < this.schedule.doc.work_days[i].breaks.length; j++){
-          if(this.schedule.doc.work_days[i].breaks[j].start === breakStart && this.schedule.doc.work_days[i].breaks[j].end === breakEnd){
+        for (let j = 0; j < this.schedule.doc.work_days[i].breaks.length; j++) {
+          if (this.schedule.doc.work_days[i].breaks[j].start === breakStart && this.schedule.doc.work_days[i].breaks[j].end === breakEnd) {
             this.schedule.doc.work_days[i].breaks.splice(j, 1);
             this.snackBar.open("Break deleted. Press Save to apply changes", "OK", {duration: 3000});
           }
