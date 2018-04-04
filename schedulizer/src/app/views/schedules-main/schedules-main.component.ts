@@ -19,6 +19,14 @@ export class SchedulesMainComponent implements OnInit {
 
   }
 
+    public refreshList(event: any) {
+        for (let schedule of this.scheduleList) {
+            if (schedule.id === event._id) {
+                this.scheduleList.splice(this.scheduleList.indexOf(schedule), 1);
+                break;
+            }
+        }
+    }
 
 
 }

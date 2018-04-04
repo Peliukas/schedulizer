@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Schedule} from "../../models/schedule";
 import {Employee} from "../../models/employee";
 import {Position} from "../../models/position";
@@ -14,7 +14,7 @@ export class EmployeeEditorComponent implements OnInit {
 
   @Input() employee: any;
   @Input() bulkActions: any;
-
+    @Output() onEmployeeDeleted: EventEmitter<any> = new EventEmitter();
   scheduleList: any = '';
   positionList: any = '';
 
@@ -40,6 +40,7 @@ export class EmployeeEditorComponent implements OnInit {
           .subscribe(answer => {
             if (answer === true) {
               employee.delete();
+                this.onEmployeeDeleted.emit(employee.data);
               this.snackBar.open("An employee has been removed", "OK", {duration: 3000});
             }
           });

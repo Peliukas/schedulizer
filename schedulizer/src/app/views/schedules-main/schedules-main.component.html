@@ -12,7 +12,7 @@
 
 				</mat-panel-description>
 			</mat-expansion-panel-header>
-			<app-schedule-editor [schedule]="schedule"></app-schedule-editor>
+			<app-schedule-editor (onScheduleDelete)="refreshList($event)" [schedule]="schedule"></app-schedule-editor>
 		</mat-expansion-panel>
 	</mat-accordion>
 </div>

@@ -45,6 +45,7 @@ export class CrudWindowComponent implements OnInit {
                     '_id': new FormControl(''),
                     'job_title': new FormControl('', [Validators.required]),
                     'description': new FormControl(''),
+                    'pay': new FormControl('', [Validators.required]),
                 }
                 this.positionFormControlGroup = new FormGroup(positionFormControls);
                 break;
@@ -53,8 +54,11 @@ export class CrudWindowComponent implements OnInit {
                     '_id': new FormControl(''),
                     'schedule_name': new FormControl('', [Validators.required]),
                     'schedule_description': new FormControl(''),
+                    'work_days': new FormControl(''),
                 };
                 this.scheduleFormControlGroup = new FormGroup(scheduleFromControls);
+                break;
+            default:
                 break;
         }
     }
@@ -62,7 +66,7 @@ export class CrudWindowComponent implements OnInit {
     public addObject() {
         switch (this.modelName) {
             case "employee":
-                this.employeeFormControlGroup.get('_id').setValue(this.employeeFormControlGroup.get('firstname').value + this.employeeFormControlGroup.get('lastname').value);
+                this.employeeFormControlGroup.get('_id').setValue(this.employeeFormControlGroup.get('firstname').value + '-' + this.employeeFormControlGroup.get('lastname').value);
                 if (this.positionControl.value) {
                     this.employeeFormControlGroup.get('position_id').setValue(this.positionControl.value);
                 }
@@ -100,12 +104,10 @@ export class CrudWindowComponent implements OnInit {
         positionRef.findAll()
             .then(data => {
                 this.positionList = data.rows;
-                console.log(this.positionList);
             });
         scheduleRef.findAll()
             .then(data => {
                 this.scheduleList = data.rows;
-                console.log(this.scheduleList);
             });
     }
 

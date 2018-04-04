@@ -16,8 +16,6 @@ export class PositionsMainComponent implements OnInit {
 
   ngOnInit() {}
 
-
-
   public deleteSelectedPosition(id: any) {
     let position = new Position();
     position.find(id)
@@ -28,6 +26,7 @@ export class PositionsMainComponent implements OnInit {
           .subscribe(answer => {
             if (answer === true) {
               position.delete();
+                this.refreshList(position.data);
               this.snackBar.open("An position has been removed", "OK", {duration: 3000});
             }
           });
@@ -42,5 +41,14 @@ export class PositionsMainComponent implements OnInit {
       this.snackBar.open("Changes saved!", "OK", {duration: 3000}) :
       this.snackBar.open("Something went wrong", "OK", {duration: 3000});
   }
+
+    public refreshList(event: any) {
+        for (let position of this.positionList) {
+            if (position.id === event._id) {
+                this.positionList.splice(this.positionList.indexOf(position), 1);
+                break;
+            }
+        }
+    }
 
 }

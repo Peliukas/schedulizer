@@ -18,6 +18,14 @@ export class EmployeesMainComponent implements OnInit {
   ngOnInit() {
   }
 
+    public refreshList(event: any) {
+        for (let employee of this.employeeList) {
+            if (employee.id === event._id) {
+                this.employeeList.splice(this.employeeList.indexOf(employee), 1);
+                break;
+            }
+        }
+    }
 
 
 }

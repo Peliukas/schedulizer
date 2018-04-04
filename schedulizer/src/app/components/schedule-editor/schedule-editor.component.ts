@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {MatDialog, MatSnackBar, MatChipList} from '@angular/material';
 import {Schedule} from "../../models/schedule";
@@ -16,6 +16,7 @@ export class ScheduleEditorComponent implements OnInit {
 
   @ViewChild('breakChips') chips: MatChipList;
   @Input() schedule: any;
+    @Output() onScheduleDelete: EventEmitter<any> = new EventEmitter();
   viewDate: Date = new Date();
   breakList: any[] = [];
   weekDayList: any[] = [];
@@ -91,6 +92,7 @@ export class ScheduleEditorComponent implements OnInit {
           .subscribe(answer => {
             if (answer === true) {
                 scheduleRef.delete();
+                this.onScheduleDelete.emit(scheduleRef.data);
               this.snackBar.open("A schedule has been removed", "OK", {duration: 3000});
             }
           });
