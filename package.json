@@ -1,5 +1,5 @@
 {
-  "name": "ng2-electron",
+  "name": "Schedulizer",
   "version": "0.1.0",
   "main": "main.js",
   "scripts": {
@@ -32,11 +32,6 @@
     "concurrently": "^3.0.0",
     "electron": "^1.4.7",
     "typescript": "^2.0.3"
-  },
-  "description": "**Clone and run for a quick way to see Electron in action.**",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Peliukas/schedulizer"
   },
   "keywords": [],
   "author": "",

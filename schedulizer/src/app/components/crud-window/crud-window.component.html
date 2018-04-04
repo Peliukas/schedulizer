@@ -1,55 +1,59 @@
 <div class="container">
   <div class="row">
-    <h4>Add {{modelName}}</h4>
     <div *ngIf="modelName === 'employee'">
-      <div>
-        <mat-form-field>
-            <input matInput type="text" disabled #employee_id value="{{firstname.value}}-{{lastname.value}}"
-                   placeholder="Darbuotojo ID">
+		<h4>Naujas darbuotojas</h4>
+		<div [formGroup]="employeeFormControlGroup">
+			<mat-form-field>
+				<input matInput [formControlName]="'firstname'" type="text" #firstname required placeholder="Vardas">
         </mat-form-field>
-        <mat-form-field>
-            <input matInput type="text" #firstname required placeholder="Vardas">
+			<mat-form-field>
+				<input matInput [formControlName]="'lastname'" type="text" #lastname required placeholder="Pavardė">
         </mat-form-field>
-        <mat-form-field>
-            <input matInput type="text" #lastname required placeholder="Pavardė">
+			<mat-form-field>
+				<input matInput [formControlName]="'work_hours_cap'" type="number" #work_hours_cap required
+					   placeholder="Maks. dirbamų valandų skaičius">
+			</mat-form-field>
+			<mat-form-field *ngIf="positionList">
+				<mat-select placeholder="Pareigos" [formControl]="positionControl">
+					<mat-option [value]="''"></mat-option>
+					<mat-option *ngFor="let position of positionList" [value]="position.id">{{position.id}}</mat-option>
+				</mat-select>
         </mat-form-field>
-        <mat-form-field>
-            <input matInput type="text" #position_id required placeholder="Pareigos">
+			<mat-form-field *ngIf="scheduleList">
+				<mat-select placeholder="Tvarkaraštis" [formControl]="scheduleControl">
+					<mat-option [value]="''"></mat-option>
+					<mat-option *ngFor="let schedule of scheduleList" [value]="schedule.id">{{schedule.id}}</mat-option>
+				</mat-select>
         </mat-form-field>
-        <mat-form-field>
-            <input matInput type="text" #schedule_id required placeholder="Tvarkaraštis">
-        </mat-form-field>
-        <button mat-button class="button-submit" (click)="addObject({_id: employee_id.value, firstname: firstname.value, lastname: lastname.value, position_id: position_id.value, schedule_id: schedule_id.value})">Submit</button>
       </div>
     </div>
     <div *ngIf="modelName === 'position'">
-      <div>
+		<h4>Nauja pareiga</h4>
+		<div [formGroup]="positionFormControlGroup">
         <mat-form-field>
-            <input matInput type="text" disabled #position_id value="{{job_title.value}}" placeholder="Pareigos ID">
+			<input [formControlName]="'job_title'" matInput type="text" #job_title required placeholder="Pavadinimas">
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="text" #job_title required placeholder="Pavadinimas">
+			<input [formControlName]="'description'" matInput type="text" #description placeholder="Aprašymas">
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="text" #description placeholder="Aprašymas">
+			<input [formControlName]="'pay'" matInput type="text" #pay required placeholder="Uždarbis per valandą">
         </mat-form-field>
-        <mat-form-field>
-            <input matInput type="text" #pay required placeholder="Uždarbis per valandą">
-        </mat-form-field>
-        <button mat-button class="button-submit" (click)="addObject({_id: position_id.value, job_title: job_title.value, description: description.value, pay: pay.value})">Submit</button>
       </div>
     </div>
     <div *ngIf="modelName === 'schedule'">
-      <div>
+		<h4>Naujas tvarkaraštis</h4>
+		<div [formGroup]="scheduleFormControlGroup">
         <mat-form-field>
-            <input matInput type="text" #schedule_name required value="{{schedule_name.value}}"
-                   placeholder="Tvarkaraščio pavadinimas">
+			<input [formControlName]="'schedule_name'" matInput type="text" #schedule_name required
+				   placeholder="Tvarkaraščio pavadinimas">
         </mat-form-field>
         <mat-form-field>
-            <textarea matInput type="text" #schedule_description placeholder="Aprašymas"></textarea>
+			<textarea [formControlName]="'schedule_description'" matInput type="text" #schedule_description
+					  placeholder="Aprašymas"></textarea>
         </mat-form-field>
-        <button mat-button class="button-submit" (click)="addObject({_id: schedule_name.value, schedule_name: schedule_name.value, schedule_description: schedule_description.value, work_days: [], date: ''})">Submit</button>
       </div>
     </div>
+	  <button mat-button class="button-submit" (click)="addObject()">Pridėti</button>
   </div>
 </div>

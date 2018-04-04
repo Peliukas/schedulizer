@@ -2,16 +2,18 @@
   <mat-list-option *ngFor="let schedule of scheduleList">{{schedule.doc.schedule_name}}</mat-list-option>
 </mat-selection-list>
 <div *ngIf="!bulkActions">
-  <mat-expansion-panel *ngFor="let schedule of scheduleList">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <strong>{{schedule.doc.schedule_name}}</strong>
-      </mat-panel-title>
-      <mat-panel-description>
+	<mat-accordion [multi]="false">
+		<mat-expansion-panel *ngFor="let schedule of scheduleList">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					<strong>{{schedule.doc.schedule_name}}</strong>
+				</mat-panel-title>
+				<mat-panel-description>
 
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <app-schedule-editor [schedule]="schedule"></app-schedule-editor>
-  </mat-expansion-panel>
+				</mat-panel-description>
+			</mat-expansion-panel-header>
+			<app-schedule-editor [schedule]="schedule"></app-schedule-editor>
+		</mat-expansion-panel>
+	</mat-accordion>
 </div>
 

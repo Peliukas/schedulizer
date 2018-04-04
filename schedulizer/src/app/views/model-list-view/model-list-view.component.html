@@ -3,13 +3,15 @@
     <div class="crud-controls">
       <div class="crud-control-button-group">
         <button mat-raised-button (click)="showAddObjectModal()">
-          <i class="material-icons">&#xE7FE;</i>
+			<i *ngIf="modelName === 'employee'" class="material-icons">&#xE853;</i>
+			<i *ngIf="modelName === 'position'" class="material-icons">&#xE8F9;</i>
+			<i *ngIf="modelName === 'schedule'" class="material-icons">&#xE8B5;</i>
           Pridėti naują
         </button>
-        <button mat-raised-button *ngIf="bulkActions === true" (click)="deleteSelectedObject()">
-          <i class="material-icons">&#xE92B;</i>
-          Panaikinti
-        </button>
+		  <!--<button mat-raised-button *ngIf="bulkActions === true" (click)="deleteSelectedObject()">-->
+		  <!--<i class="material-icons">&#xE92B;</i>-->
+		  <!--Panaikinti-->
+		  <!--</button>-->
       </div>
       <!--<div class="crud-control-bulk-actions-wrapper">-->
       <!--<mat-slide-toggle [(ngModel)]="bulkActions">Masinis veiksmas</mat-slide-toggle>-->

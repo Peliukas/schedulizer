@@ -83,37 +83,20 @@ export class ScheduleEditorComponent implements OnInit {
   }
 
   public deleteSelectedSchedule() {
-    console.log('deleting schedule');
-    let schedule = new Schedule();
-    schedule.find(this.schedule.doc._id)
+      let scheduleRef = new Schedule();
+      scheduleRef.find(this.schedule.doc._id)
       .then(data => {
-        schedule.setValues(data);
-        schedule.delete();
         let dialogRef = this.matDialog.open(ConfirmationBoxComponent);
         dialogRef.afterClosed()
           .subscribe(answer => {
             if (answer === true) {
-              schedule.delete();
+                scheduleRef.delete();
               this.snackBar.open("A schedule has been removed", "OK", {duration: 3000});
             }
           });
       });
   }
 
-
-  public saveChanges() {
-    let scheduleRef = new Schedule();
-    scheduleRef.find(this.schedule.id)
-      .then(data => {
-        scheduleRef.data = data;
-        scheduleRef.save() === true ?
-          this.snackBar.open("Changes saved!", "OK", {duration: 3000}) :
-          this.snackBar.open("Something went wrong", "OK", {duration: 3000});
-        this.schedule.doc = scheduleRef.data;
-        this.viewDate = new Date();
-        this.getCalendarWorkDays();
-      });
-  }
 
   public nextMonth() {
     this.viewDate = new Date(this.viewDate.setMonth(this.viewDate.getMonth() + 1));
