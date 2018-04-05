@@ -48,10 +48,19 @@ app-root{
   float: left;
 }
 
+.text-left {
+    text-align: left;
+}
+
 simple-snack-bar{
   color: white;
 }
 
 .hidden{
     display: none !important;
+}
+
+.medium-margin-horizontal {
+    margin-left: 20px;
+    margin-right: 20px;
 }

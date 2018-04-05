@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { StorageAdapterService } from './services/storage-adapter.service';
 import { CalendarModule } from 'angular-calendar';
 
-import { SidebarWrapperComponent } from './components/sidebar-wrapper/sidebar-wrapper.component';
 import { PageContentWrapperComponent } from './components/page-content-wrapper/page-content-wrapper.component';
 import { CrudWindowComponent } from './components/crud-window/crud-window.component';
 import { CalendarWrapperComponent } from './components/calendar-wrapper/calendar-wrapper.component';
@@ -37,7 +36,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    SidebarWrapperComponent,
     PageContentWrapperComponent,
     CrudWindowComponent,
     CalendarWrapperComponent,
