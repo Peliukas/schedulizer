@@ -1,4 +1,5 @@
 import PouchDB from 'pouchdb';
+import {Schedule} from "./schedule";
 
 export class Employee {
 
@@ -47,6 +48,16 @@ export class Employee {
 
   public delete(){
     this.db.get(this.data._id).then(doc => {
+        if (this.data.schedule_id) {
+            let tempSchedule = new Schedule();
+            let scheduleRef = new Schedule().find(this.data.schedule_id)
+                .then(schedule => {
+                    if (schedule.is_private) {
+                        tempSchedule.data._id = schedule._id;
+                        tempSchedule.delete();
+                    }
+                });
+        }
       doc._deleted = true;
       return this.db.put(doc);
     }, reason =>{
@@ -54,7 +65,8 @@ export class Employee {
     });
   }
 
-  public async find(id: any){
+
+    public async find(id: any){
     this.db.get(id)
       .then(employee => {
         this.data = employee;

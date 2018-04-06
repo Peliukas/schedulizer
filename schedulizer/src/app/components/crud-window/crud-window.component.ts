@@ -17,6 +17,7 @@ export class CrudWindowComponent implements OnInit {
     employeeFormControlGroup: FormGroup;
     positionFormControlGroup: FormGroup;
     scheduleFormControlGroup: FormGroup;
+    privateSchedule = false;
     positionList: any[] = [];
     scheduleList: any[] = [];
 
@@ -53,6 +54,7 @@ export class CrudWindowComponent implements OnInit {
                     '_id': new FormControl(''),
                     'schedule_name': new FormControl('', [Validators.required]),
                     'work_days': new FormControl(''),
+                    'is_private': new FormControl(''),
                     'work_hours_cap': new FormControl('', [Validators.required]),
                 };
                 this.scheduleFormControlGroup = new FormGroup(scheduleFromControls);
@@ -70,7 +72,26 @@ export class CrudWindowComponent implements OnInit {
                     this.employeeFormControlGroup.get('position_id').setValue(this.positionControl.value);
                 }
                 if (this.scheduleControl.value) {
-                    this.employeeFormControlGroup.get('schedule_id').setValue(this.scheduleControl.value);
+                    if (!this.privateSchedule) {
+                        this.employeeFormControlGroup.get('schedule_id').setValue(this.scheduleControl.value);
+                        console.log("public schedule: ", this.scheduleControl.value);
+                    } else {
+                        let schedule = new Schedule();
+                        schedule.data._id = this.employeeFormControlGroup.get('firstname').value + '-' + this.employeeFormControlGroup.get('lastname').value;
+                        schedule.data.work_hours_cap = 0;
+                        schedule.data.is_private = true;
+                        schedule.save();
+                        this.employeeFormControlGroup.get('schedule_id').setValue(schedule.data._id);
+                        console.log("private schedule: ", schedule);
+                    }
+                } else {
+                    let schedule = new Schedule();
+                    schedule.data._id = this.employeeFormControlGroup.get('firstname').value + '-' + this.employeeFormControlGroup.get('lastname').value;
+                    schedule.data.work_hours_cap = 0;
+                    schedule.data.is_private = true;
+                    schedule.save();
+                    this.employeeFormControlGroup.get('schedule_id').setValue(schedule.data._id);
+                    console.log("private schedule: ", schedule);
                 }
                 if (this.employeeFormControlGroup.valid) {
                     let employee = new Employee();

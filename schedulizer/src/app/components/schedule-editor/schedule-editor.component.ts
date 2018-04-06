@@ -297,6 +297,11 @@ export class ScheduleEditorComponent implements OnInit {
         this.refresh.next();
     }
 
+    public unmarkDays() {
+        this.selectedWorkDayList = [];
+        this.selectMultipleDays = false;
+    }
+
     public openAddBreakWindow() {
         let dialogRef = this.matDialog.open(AddBreakComponent);
         dialogRef.afterClosed()

@@ -34,7 +34,6 @@ export class ModelListViewComponent implements OnInit {
         new Employee().findAll()
           .then(data => {
             this.objectList = data.rows;
-            console.log(data.rows);
           });
         break;
       case 'position':
@@ -46,7 +45,14 @@ export class ModelListViewComponent implements OnInit {
       case 'schedule':
         new Schedule().findAll()
           .then(data => {
-            this.objectList = data.rows;
+              let publicSchedules = [];
+              for (let schedule of data.rows) {
+                  if (!schedule.doc.is_private) {
+                      publicSchedules.push(schedule);
+                  }
+              }
+              console.log(publicSchedules);
+              this.objectList = publicSchedules;
           });
         break;
       default: console.log("object not found!");

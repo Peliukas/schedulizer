@@ -4,6 +4,7 @@ import {Employee} from "../../models/employee";
 import {Position} from "../../models/position";
 import {ConfirmationBoxComponent} from "../confirmation-box/confirmation-box.component";
 import {MatDialog, MatSnackBar} from "@angular/material";
+import {CalendarWrapperComponent} from "../calendar-wrapper/calendar-wrapper.component";
 
 @Component({
   selector: 'app-employee-editor',
@@ -41,17 +42,28 @@ export class EmployeeEditorComponent implements OnInit {
             if (answer === true) {
               employee.delete();
                 this.onEmployeeDeleted.emit(employee.data);
-              this.snackBar.open("An employee has been removed", "OK", {duration: 3000});
+                this.snackBar.open("Darbuotojas pašalintas", "OK", {duration: 3000});
             }
           });
       });
   }
 
   public getScheduleList(){
-    this.scheduleRef.findAll()
-      .then(data => {
-        this.scheduleList = data.rows;
-      });
+      new Schedule().findAll()
+          .then(data => {
+              let publicSchedules = [];
+              for (let schedule of data.rows) {
+                  if (!schedule.doc.is_private) {
+                      publicSchedules.push(schedule);
+                  }
+                  if (schedule.doc.is_private && schedule.id === this.employee.id) {
+                      publicSchedules.push(schedule);
+                  }
+              }
+              console.log(publicSchedules);
+              this.scheduleList = publicSchedules;
+          });
+
   }
 
   public saveChanges(changes: any) {
@@ -59,8 +71,8 @@ export class EmployeeEditorComponent implements OnInit {
     employee.find(changes._id).then(data => {
       employee.data = changes;
       employee.save() === true ?
-        this.snackBar.open("Changes saved!", "OK", {duration: 3000}) :
-        this.snackBar.open("Something went wrong", "OK", {duration: 3000});
+          this.snackBar.open("Pakeitimai išsaugoti", "OK", {duration: 3000}) :
+          this.snackBar.open("Nepavyko išsaugoti", "OK", {duration: 3000});
     });
   }
 
@@ -70,6 +82,24 @@ export class EmployeeEditorComponent implements OnInit {
         this.positionList = data.rows;
       });
   }
+
+    public openCalendarWindow() {
+        new Schedule().find(this.employee.id)
+            .then(schedule => {
+                console.log("Schedule passed: ", schedule);
+                let tempSchedule = {
+                    doc: schedule,
+                    id: schedule._id,
+                    rev: schedule.rev,
+                };
+                let dialogRef = this.matDialog.open(CalendarWrapperComponent, {
+                    height: '95vh',
+                    width: '80vw',
+                    data: {schedule: tempSchedule}
+                });
+
+            });
+    }
 
 
 }

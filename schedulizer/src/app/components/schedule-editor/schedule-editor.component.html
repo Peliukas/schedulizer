@@ -59,7 +59,9 @@
 								<i class="material-icons">&#xEB44;</i>
 								Pridėti pertrauką
 							</button>
-							<button mat-raised-button (click)="clearCells()">
+							<button mat-raised-button
+									[disabled]="(selectedWorkDayList.length < 1 && selectMultipleDays) || (!selectedCalendarDay && !selectMultipleDays)"
+									(click)="clearCells()">
 								<i class="material-icons">&#xE14C;</i>
 								Išvalyti pažymėtas dienas
 							</button>
@@ -72,12 +74,18 @@
 			</mat-card-content>
 			<mat-card-actions>
 				<div class="row">
-					<div class="col-12">
-						<mat-slide-toggle [(ngModel)]="weekDaySelectionMode">Pridėti terminą</mat-slide-toggle>
-						<mat-slide-toggle class="medium-margin-horizontal" [disabled]="weekDaySelectionMode"
-										  (change)="resetSelection()"
-										  [(ngModel)]="selectMultipleDays">Pasirinkti keletą dienų
-						</mat-slide-toggle>
+					<div class="col-12 flex-space-between flex-baseline-vertical">
+						<div>
+							<mat-slide-toggle [(ngModel)]="weekDaySelectionMode">Pridėti terminą</mat-slide-toggle>
+							<mat-slide-toggle class="medium-margin-horizontal" [disabled]="weekDaySelectionMode"
+											  (change)="resetSelection()"
+											  [(ngModel)]="selectMultipleDays">Pasirinkti keletą dienų
+							</mat-slide-toggle>
+						</div>
+						<button mat-button matTooltip="Atžymėti viską" (click)="unmarkDays()"
+								*ngIf="selectMultipleDays && selectedWorkDayList">
+							<i class="material-icons">&#xE86A;</i>
+						</button>
 					</div>
 				</div>
 			</mat-card-actions>
