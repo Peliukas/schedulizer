@@ -21,18 +21,19 @@
 			<div class="input-field-wrapper">
 				<mat-form-field>
 					<mat-select placeholder="Pareigos" #positionSelect value="{{employee.doc.position_id}}">
+						<mat-option [value]="''"></mat-option>
 						<mat-option *ngFor="let position of positionList" [value]="position.id">
 							{{position.id}}
 						</mat-option>
 					</mat-select>
 				</mat-form-field>
 			</div>
-			<div class="input-field-wrapper">
-				<mat-form-field>
-					<input matInput type="number" placeholder="Maks. dirbamų valandų skaičius"
-						   [(ngModel)]="employee.doc.work_hours_cap">
-				</mat-form-field>
-			</div>
+			<!--<div class="input-field-wrapper">-->
+			<!--<mat-form-field>-->
+			<!--<input matInput type="number" placeholder="Maks. dirbamų valandų skaičius"-->
+			<!--[(ngModel)]="employee.doc.work_hours_cap">-->
+			<!--</mat-form-field>-->
+			<!--</div>-->
 		</div>
 		<div class="col-8">
 			<mat-card>

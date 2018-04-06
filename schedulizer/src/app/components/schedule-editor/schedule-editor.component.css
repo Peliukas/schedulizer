@@ -30,7 +30,7 @@
 
 .work-day-calendar-cell-time{
   text-align: center;
-  background: #7369ffbd;
+    background: #e91405;
 }
 
 .work-day-calendar-cell-time small{
@@ -78,4 +78,9 @@ mat-chip-list{
 
 .apply-schedule-period-button {
     margin-top: 20px;
+}
+
+.holiday {
+    background: #08a620 !important;
+    color: white;
 }

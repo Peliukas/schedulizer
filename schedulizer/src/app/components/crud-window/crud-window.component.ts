@@ -1,7 +1,7 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {Employee} from "../../models/employee";
 import {Position} from "../../models/position";
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 import {Schedule} from "../../models/schedule";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
@@ -22,7 +22,7 @@ export class CrudWindowComponent implements OnInit {
 
     modelName: any;
 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any, private  dialogRef: MatDialogRef<CrudWindowComponent>) {
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any, private  dialogRef: MatDialogRef<CrudWindowComponent>, private snackBar: MatSnackBar) {
     }
 
     ngOnInit() {
@@ -33,7 +33,7 @@ export class CrudWindowComponent implements OnInit {
                     '_id': new FormControl(''),
                     'firstname': new FormControl('', [Validators.required]),
                     'lastname': new FormControl('', [Validators.required]),
-                    'work_hours_cap': new FormControl('', [Validators.required]),
+                    // 'work_hours_cap': new FormControl('', [Validators.required]),
                     'position_id': new FormControl(''),
                     'schedule_id': new FormControl(''),
                 }
@@ -44,7 +44,6 @@ export class CrudWindowComponent implements OnInit {
                 let positionFormControls = {
                     '_id': new FormControl(''),
                     'job_title': new FormControl('', [Validators.required]),
-                    'description': new FormControl(''),
                     'pay': new FormControl('', [Validators.required]),
                 }
                 this.positionFormControlGroup = new FormGroup(positionFormControls);
@@ -53,8 +52,8 @@ export class CrudWindowComponent implements OnInit {
                 let scheduleFromControls = {
                     '_id': new FormControl(''),
                     'schedule_name': new FormControl('', [Validators.required]),
-                    'schedule_description': new FormControl(''),
                     'work_days': new FormControl(''),
+                    'work_hours_cap': new FormControl('', [Validators.required]),
                 };
                 this.scheduleFormControlGroup = new FormGroup(scheduleFromControls);
                 break;
@@ -73,10 +72,14 @@ export class CrudWindowComponent implements OnInit {
                 if (this.scheduleControl.value) {
                     this.employeeFormControlGroup.get('schedule_id').setValue(this.scheduleControl.value);
                 }
-                let employee = new Employee();
-                employee.setValues(this.employeeFormControlGroup.value);
-                employee.save();
-                this.dialogRef.close(employee);
+                if (this.employeeFormControlGroup.valid) {
+                    let employee = new Employee();
+                    employee.setValues(this.employeeFormControlGroup.value);
+                    employee.save();
+                    this.dialogRef.close(employee);
+                } else {
+                    this.snackBar.open("Užpildykite visus reikiamus laukus", "OK", {duration: 3000});
+                }
                 break;
             case "position":
                 this.positionFormControlGroup.get('_id').setValue(this.positionFormControlGroup.get('job_title').value);

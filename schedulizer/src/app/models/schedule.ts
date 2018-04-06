@@ -9,7 +9,7 @@ export class Schedule {
     this.data = {
       _id: "",
       schedule_name: "",
-      schedule_description: "",
+        work_hours_cap: "",
       work_days: []
     };
     this.db = new PouchDB('Schedules');
@@ -18,8 +18,8 @@ export class Schedule {
   public setValues(data: any){
     this.data._id = data._id;
     this.data.schedule_name= data.schedule_name;
-    this.data.schedule_description = data.schedule_description;
     this.data.work_days = data.work_days;
+      this.data.work_hours_cap = data.work_hours_cap;
   }
 
 
@@ -28,10 +28,8 @@ export class Schedule {
       this.db.get(this.data._id).then(doc =>{
         this.data._rev = doc._rev;
         this.db.put(this.data);
-        console.log('schedule saved!');
       }, cause =>{
         if(cause.status === 404){
-          console.log('creating new schedule');
           this.db.put(this.data);
         }
       });

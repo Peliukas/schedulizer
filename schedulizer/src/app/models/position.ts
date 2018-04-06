@@ -10,7 +10,6 @@ export class Position {
     this.data = {
       _id: "",
       job_title: "",
-      description: "",
       pay: ""
     };
     this.db = new PouchDB('Positions');
@@ -19,7 +18,6 @@ export class Position {
   public setValues(data: any){
     this.data._id = data._id;
     this.data.job_title = data.job_title;
-    this.data.description = data.description;
     this.data.pay = data.pay;
     return true;
   }
